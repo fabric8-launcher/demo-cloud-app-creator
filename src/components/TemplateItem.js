@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 
 import { Card, Image, Label, Icon } from 'semantic-ui-react'
 
-const TemplateItem = ({ title, icon, iconImage, tags, description }) => (
+const TemplateItem = (props) => (
   <Card as="a">
-    {icon && (<Icon name={icon} size="huge" />)}
-    {iconImage && (<Image src={iconImage} />)}
+    {props.icon && (<Icon name={props.icon} size="huge" />)}
+    {props.iconImage && (<Image src={props.iconImage} />)}
     <Card.Content>
-      <Card.Header>{title}</Card.Header>
-      <Card.Description>{description}</Card.Description>
+      <Card.Header>{props.title}</Card.Header>
+      <Card.Description>{props.description}</Card.Description>
     </Card.Content>
-    {tags.length > 0 && (
+    {props.tags.length > 0 && (
       <Card.Content extra>
-        <span className='tags'>{tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>
+        <span className='tags'>{props.tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>
       </Card.Content>
     )}
   </Card>

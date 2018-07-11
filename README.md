@@ -11,3 +11,6 @@ $ yarn start
 
 https://react.semantic-ui.com/introduction
 
+## Live version
+
+http://app-app-generator.dev.rdu2c.fabric8.io/

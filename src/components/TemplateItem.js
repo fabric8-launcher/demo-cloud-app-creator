@@ -13,7 +13,7 @@ const TemplateItem = ({ title, icon, iconImage, tags, description }) => (
     </Card.Content>
     {tags.length > 0 && (
       <Card.Content extra>
-        <span className='tags'>{tags.map(t => (<Label>{t}</Label>))}</span>
+        <span className='tags'>{tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>
       </Card.Content>
     )}
   </Card>

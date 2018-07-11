@@ -4,7 +4,7 @@ import TemplateItem from '../components/TemplateItem';
 
 const George = () => (
   <div className="create-page">
-    <Container text>
+    <Container fluid text>
       <Card.Group itemsPerRow={3}>
         <TemplateItem title="MicroService" description="A simple MicroService" tags={['backend', 'microservice']} iconImage="/images/microservices.png"/>
       </Card.Group>

@@ -11,13 +11,13 @@ const Create = () => (
         <TemplateItem title="Vert.x stack" description="Full stack from UI to REST to DB" tags={['backend', 'frontend']}/>
         <TemplateItem title="Messaging" description="AMQ Queue" tags={['messaging', 'amq', 'backend']}/>
         <TemplateItem title="Messaging" description="AMQ Topic" tags={['messaging', 'amq', 'backend']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
-        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']}/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
+        <TemplateItem title="Some template" description="The template description" tags={['some', 'tag']} dummy/>
         <TemplateItem title="Custom" description="Fully custom design" />
       </Card.Group>
     </Container>

@@ -24,10 +24,6 @@
   font-size: large;
 }
 
-.card i {
-  width: 100%;
-}
-
 @keyframes app-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

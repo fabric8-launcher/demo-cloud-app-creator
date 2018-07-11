@@ -5,6 +5,7 @@ import './App.css';
 import logo from './assets/img/pizza.svg';
 import Create from './pages/Create';
 import Home from './pages/Home';
+import George from './pages/George';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/create' component={Create}/>
+            <Route path='/george' component={George}/>
           </Switch>
         </BrowserRouter>
       </div>

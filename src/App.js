@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import logo from './assets/img/pizza.svg';
 import './App.css';
+import logo from './assets/img/pizza.svg';
 import Create from './pages/Create';
 import Home from './pages/Home';
 

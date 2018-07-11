@@ -5,7 +5,7 @@ import { Card, Image, Label, Icon } from 'semantic-ui-react'
 
 const TemplateItem = ({ title, icon, iconImage, tags, description }) => (
   <Card as="a">
-    {icon && (<Icon name={icon} size="huge" />)}
+    {icon && (<center><Icon name={icon} size="huge" /></center>)}
     {iconImage && (<Image src={iconImage} />)}
     <Card.Content>
       <Card.Header>{title}</Card.Header>

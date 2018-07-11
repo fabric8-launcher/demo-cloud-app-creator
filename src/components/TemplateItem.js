@@ -22,8 +22,8 @@ const TemplateItem = ({ title, icon, iconImage, tags, description }) => (
 TemplateItem.propTypes = {
   title: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
-  icon: PropTypes.node,
-  iconImage: PropTypes.node,
+  icon: PropTypes.string,
+  iconImage: PropTypes.string,
   description: PropTypes.string.isRequired,
 };
 

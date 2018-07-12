@@ -1,7 +1,9 @@
 import React from 'react';
-import { Checkbox, Container, Form } from 'semantic-ui-react';
+import { Checkbox, Container, Form, Menu } from 'semantic-ui-react';
 import SelectBox from '../components/SelectBox';
 import Step from '../components/Step';
+
+import logo from '../assets/img/pizza.svg';
 
 const templateStep = ({ action }) => (
   <Step.Item
@@ -80,10 +82,17 @@ class Create extends React.Component {
   render() {
     return (
       <div className="create-page">
+        <Menu vertical inverted fixed="left">
+          <Menu.Item>
+            <a href="/"><img src={logo} className="app-logo" alt="logo"/></a>
+          </Menu.Item>
+          <Menu.Item>
+            <Step.Index>
+              {this.state.steps}
+            </Step.Index>
+          </Menu.Item>
+        </Menu>
         <Container text>
-          <Step.Index>
-            {this.state.steps}
-          </Step.Index>
           <Step.List>
             {this.state.steps}
           </Step.List>

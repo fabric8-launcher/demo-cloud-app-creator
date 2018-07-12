@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
-import logo from './assets/img/pizza.svg';
 import Create from './pages/Create';
 import George from './pages/George';
 import Home from './pages/Home';
@@ -26,7 +25,6 @@ class App extends Component {
           <Loader />
         </Dimmer>
         <header className="app-header">
-          <a href="/"><img src={logo} className="app-logo" alt="logo"/></a>
           <h1 className="app-title">Welcome to the Cloud App Creator</h1>
         </header>
         <BrowserRouter>

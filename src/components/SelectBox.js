@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Template.css';
+import './SelectBox.css';
 
 import { Card, Image, Label, Icon } from 'semantic-ui-react'
 
@@ -42,6 +42,6 @@ const List = (props) => (
   <Card.Group {...props} />
 );
 
-const Template = { Item, List };
+const SelectBox = { Item, List };
 
-export default Template;
+export default SelectBox;

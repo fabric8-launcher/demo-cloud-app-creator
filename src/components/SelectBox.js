@@ -6,7 +6,7 @@ import { Card, Label } from 'semantic-ui-react'
 import Picture from './Picture';
 
 const Item = (props) => (
-  <Card as="a" className={`template-item ${props.dummy && 'dummy'}`}>
+  <Card as="a" className={`template-item ${props.dummy && 'dummy'}`} onClick={props.onClick}>
     <Picture value={props.picture} />
     <Card.Content>
       <Card.Header>{props.title}</Card.Header>
@@ -24,6 +24,7 @@ Item.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func,
   picture: PropTypes.string,
   dummy: PropTypes.bool,
 };
@@ -33,7 +34,8 @@ Item.defaultProps = {
   description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
   tags: [],
   picture: null,
-  dummy: false
+  dummy: false,
+  onClick: null,
 };
 
 const List = (props) => (

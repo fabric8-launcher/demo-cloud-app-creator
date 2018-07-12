@@ -6,7 +6,7 @@ import { Item as BaseItem } from 'semantic-ui-react'
 import Picture from './Picture';
 
 const Item = (props) => (
-    <BaseItem className={"step-item"} inverted>
+    <BaseItem className={"step-item"}>
       <Picture value={props.picture} />
       <BaseItem.Content>
         <BaseItem.Header>{props.title}</BaseItem.Header>

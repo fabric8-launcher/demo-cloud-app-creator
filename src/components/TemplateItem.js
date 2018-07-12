@@ -5,7 +5,7 @@ import './TemplateItem.css';
 import { Card, Image, Label, Icon } from 'semantic-ui-react'
 
 const TemplateItem = (props) => (
-  <Card as="a" className={(props.dummy ? "dummy" : "")}>
+  <Card as="a" className={"template-item " + (props.dummy ? "dummy" : "")}>
     {props.icon && (<Icon name={props.icon} size="huge" />)}
     {props.iconImage && (<Image src={props.iconImage} />)}
     <Card.Content>

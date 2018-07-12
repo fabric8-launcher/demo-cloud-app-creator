@@ -81,6 +81,9 @@ class Create extends React.Component {
     return (
       <div className="create-page">
         <Container text>
+          <Step.Index>
+            {this.state.steps}
+          </Step.Index>
           <Step.List>
             {this.state.steps}
           </Step.List>

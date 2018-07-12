@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './Step.css';
 
 import { Item as BaseItem } from 'semantic-ui-react'
+import { List as BaseList } from 'semantic-ui-react'
 import Picture from './Picture';
 
 const Item = (props) => (
@@ -14,8 +15,7 @@ const Item = (props) => (
       </BaseItem.Content>
       <BaseItem.Content className={'step-body'}>
         {props.children}
-    </BaseItem.Content>
-
+      </BaseItem.Content>
     </BaseItem>
 );
 
@@ -28,14 +28,19 @@ Item.defaultProps = {
   picture: null,
 };
 
-
 const List = (props) => (
     <BaseItem.Group className={"step-list"}>
         {props.children}
     </BaseItem.Group>
 );
 
-const Step = { List, Item };
+const Index = (props) => (
+    <BaseList className={"step-index"}>
+        {props.children.map(step => (<BaseList.Item key={step.key}>{step.props.title}</BaseList.Item>))}
+    </BaseList>
+);
+
+const Step = { Item, List, Index };
 
 export default Step;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'semantic-ui-react';
+import { Checkbox, Container, Form } from 'semantic-ui-react';
 import SelectBox from '../components/SelectBox';
 import Step from '../components/Step';
 
@@ -24,13 +24,44 @@ const TemplateStep = {
   )
 }
 
+const MessageBrokerStep = {
+  key: 'message-broker',
+  title: 'Message Broker: AMQ',
+  description: 'A message broker based on Red Hat AMQ.',
+  picture: 'bullhorn',
+  children: (
+    <Form>
+      <Form.Field>
+        Type
+      </Form.Field>
+      <Form.Field>
+        <Checkbox
+          radio
+          label='Queue (one listener)'
+          name='queue'
+          value='this'
+        />
+      </Form.Field>
+      <Form.Field>
+        <Checkbox
+          radio
+          label='Topic (many listeners)'
+          name='topic'
+          value='this'
+        />
+      </Form.Field>
+    </Form>
+  )
+}
+
 class Create extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       steps: [
-        TemplateStep
+        TemplateStep,
+        MessageBrokerStep,
       ]
     };
 

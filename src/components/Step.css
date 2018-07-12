@@ -4,8 +4,11 @@
   background-color: white;
   border-radius: 10px;
   padding: 30px;
-  display: flex;
   flex-wrap: wrap;
+}
+
+.ui.items > .step-item > .picture{
+  margin-right: 20px;
 }
 
 .ui.items > .step-item .step-body {

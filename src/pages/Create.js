@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Container, Form } from 'semantic-ui-react';
+import { Checkbox, Container, Form, Grid } from 'semantic-ui-react';
 import SelectBox from '../components/SelectBox';
 import Step from '../components/Step';
 
@@ -80,14 +80,20 @@ class Create extends React.Component {
   render() {
     return (
       <div className="create-page">
-        <Container text>
-          <Step.Index>
-            {this.state.steps}
-          </Step.Index>
-          <Step.List>
-            {this.state.steps}
-          </Step.List>
-        </Container>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column width={2}>
+              <Step.Index>
+                {this.state.steps}
+              </Step.Index>
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <Step.List>
+                {this.state.steps}
+              </Step.List>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }

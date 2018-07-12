@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './SelectBox.css';
 
-import { Card, Image, Label, Icon } from 'semantic-ui-react'
+import { Card, Label } from 'semantic-ui-react'
+import Picture from './Picture';
 
 const Item = (props) => (
   <Card as="a" className={`template-item ${props.dummy && 'dummy'}`}>
-    {props.icon && (<Icon name={props.icon} size="huge" />)}
-    {props.iconImage && (<Image src={props.iconImage} />)}
+    <Picture value={props.picture} />
     <Card.Content>
       <Card.Header>{props.title}</Card.Header>
       <Card.Description>{props.description}</Card.Description>
@@ -24,8 +24,7 @@ Item.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
-  icon: PropTypes.string,
-  iconImage: PropTypes.string,
+  picture: PropTypes.string,
   dummy: PropTypes.bool,
 };
 
@@ -33,13 +32,12 @@ Item.defaultProps = {
   title: 'A dummy title',
   description: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
   tags: [],
-  icon: null,
-  iconImage: null,
+  picture: null,
   dummy: false
 };
 
 const List = (props) => (
-  <Card.Group {...props} />
+  <Card.Group {...props} centered />
 );
 
 const SelectBox = { Item, List };

@@ -2,27 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Step.css';
 
-import { Card } from 'semantic-ui-react'
+import { Item as BaseItem } from 'semantic-ui-react'
+import Picture from './Picture';
 
 const Item = (props) => (
-    <Card className={"step-item"}>
-      <Card.Content>
-        <Card.Header textAlign="left">{props.title}</Card.Header>
-      </Card.Content>
-      <Card.Content>
+    <BaseItem className={"step-item"} inverted>
+      <Picture value={props.picture} />
+      <BaseItem.Content>
+        <BaseItem.Header>{props.title}</BaseItem.Header>
+        <BaseItem.Meta>{props.description}</BaseItem.Meta>
+      </BaseItem.Content>
+      <BaseItem.Content className={'step-body'}>
         {props.children}
-      </Card.Content>
-    </Card>
+    </BaseItem.Content>
+
+    </BaseItem>
 );
 
 Item.propTypes = {
   title: PropTypes.string.isRequired,
+  picture: PropTypes.string,
 };
 
+Item.defaultProps = {
+  picture: null,
+};
+
+
 const List = (props) => (
-    <Card.Group itemsPerRow={1} className={"step-list"}>
+    <BaseItem.Group className={"step-list"}>
         {props.children}
-    </Card.Group>
+    </BaseItem.Group>
 );
 
 const Step = { List, Item };

@@ -1,5 +1,6 @@
 .app {
   text-align: center;
+  background-color: #efefef;
 }
 
 .app-logo {
@@ -22,6 +23,10 @@
 
 .app-intro {
   font-size: large;
+}
+
+.ui.text.container {
+  max-width: none !important;
 }
 
 @keyframes app-logo-spin {

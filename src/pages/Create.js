@@ -4,12 +4,14 @@ import SelectBox from '../components/SelectBox';
 import Step from '../components/Step';
 
 const TemplateStep = {
-  id: 'select-template',
+  key: 'select-template',
   title: 'Select a template',
-  content: (
+  description: 'You can choose one of those predefined templates to create you app, you will still be able to customize it once selected.',
+  picture: 'wpforms',
+  children: (
     <SelectBox.List>
-      <SelectBox.Item title="MicroService" description="A simple MicroService" tags={['backend', 'microservice']} iconImage="/images/microservices.png"/>
-      <SelectBox.Item title="CRUD" description="A simple CRUD App" tags={['backend', 'frontend']} icon="database"/>
+      <SelectBox.Item title="MicroService" description="A simple MicroService" tags={['backend', 'microservice']} picture="/images/microservices.png"/>
+      <SelectBox.Item title="CRUD" description="A simple CRUD App" tags={['backend', 'frontend']} picture="database"/>
       <SelectBox.Item title="Vert.x stack" description="Full stack from UI to REST to DB" tags={['backend', 'frontend']}/>
       <SelectBox.Item title="Messaging" description="AMQ Queue" tags={['messaging', 'amq', 'backend']}/>
       <SelectBox.Item title="Messaging" description="AMQ Topic" tags={['messaging', 'amq', 'backend']}/>
@@ -39,7 +41,7 @@ class Create extends React.Component {
       <div className="create-page">
         <Container text>
           <Step.List>
-            {this.state.steps.map(step => (<Step.Item key={step.id} title={step.title} children={step.content} />))}
+            {this.state.steps.map(step => (<Step.Item {...step} />))}
           </Step.List>
         </Container>
       </div>

@@ -7,14 +7,14 @@ const isImage = value => value && value.startsWith('/images/');
 const content = value => (
   <div className="picture">
     {!isImage(value) && (<Icon name={value} size="huge" />)}
-    {isImage(value) && (<Image src={value} />)}
+    {isImage(value) && (<Image src={value} height="64px" />)}
   </div>
 );
 
 const Picture = (props) => props.value && content(props.value);
 
 Picture.propTypes = {
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 
 Picture.defaultProps = {

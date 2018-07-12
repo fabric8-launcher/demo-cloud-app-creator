@@ -4,7 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
 import Create from './pages/Create';
-import George from './pages/George';
+import Layout2 from './pages/Layout2';
 import Home from './pages/Home';
 
 class App extends Component {
@@ -31,7 +31,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/create' component={Create}/>
-            <Route path='/george' component={George}/>
+            <Route path='/layout2' component={Layout2}/>
           </Switch>
         </BrowserRouter>
       </div>

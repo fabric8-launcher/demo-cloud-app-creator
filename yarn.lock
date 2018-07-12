@@ -2363,8 +2363,8 @@ eslint-plugin-react@7.4.0:
     prop-types "^15.5.10"
 
 eslint-scope@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-3.7.1.tgz#3d63c3edfda02e06e01a452ad88caacc7cdcb6e8"
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-3.7.2.tgz#59152c94e2e2cbf64c03b8d3bdc5072a39d54043"
   dependencies:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
@@ -3988,8 +3988,8 @@ jquery@x.*:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.9:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.5.tgz#e293cd3c7c82f070d700fc7a1ca0a2e69f101f92"
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.6.tgz#1d49f618bef43630cd191f4e122447acfdb947d8"
 
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"
@@ -5609,7 +5609,7 @@ react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
-react-scripts@1.1.4:
+react-scripts@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-1.1.4.tgz#d5c230e707918d6dd2d06f303b10f5222d017c88"
   dependencies:

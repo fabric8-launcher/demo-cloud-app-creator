@@ -1,0 +1,12 @@
+.template-item i {
+  width: 100%;
+}
+
+.template-item.dummy {
+  font-family: 'Redacted Script' !important;
+}
+
+.template-item.dummy .header {
+  font-family: 'Redacted Script Bold' !important;
+}
+

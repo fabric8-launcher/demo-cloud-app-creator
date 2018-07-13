@@ -13,16 +13,16 @@ export default class BoosterMatrix extends Component {
 
     normalizeResponse = response => {
         this.setState({
-            runtimes: response.runtimes,
             missions: response.missions,
-            boosters: _.keyBy(response.boosters.map(this.findBooster), 
+            runtimes: response.runtimes,
+            boosters: _.keyBy(response.boosters.map(this.enrichBooster), 
                 booster => booster.mission + "-" + booster.runtime)
         });
         console.log(this.state.boosters)
         return response;
     }
 
-    findBooster = (booster) => {
+    enrichBooster = (booster) => {
         return {
             id: booster.mission + "-" + booster.runtime,
             mission: booster.mission,
@@ -33,7 +33,6 @@ export default class BoosterMatrix extends Component {
             osio:_.get(booster, 'metadata.osio.enabled',false)
         };
     }
-
 
     render() {
         return (

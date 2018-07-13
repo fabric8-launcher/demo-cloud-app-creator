@@ -6,6 +6,7 @@ import './App.css';
 import Create from './pages/Create';
 import Layout2 from './pages/Layout2';
 import Home from './pages/Home';
+import BoosterMatrix from './pages/BoosterMatrix';
 
 class App extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class App extends Component {
             <Route exact path='/' component={Home}/>
             <Route path='/create' component={Create}/>
             <Route path='/layout2' component={Layout2}/>
+            <Route path='/matrix' component={BoosterMatrix}/>
           </Switch>
         </BrowserRouter>
       </div>

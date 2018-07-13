@@ -39,7 +39,7 @@ Item.defaultProps = {
 };
 
 const List = (props) => (
-  <Card.Group {...props} centered />
+  <Card.Group {...props} centered raised />
 );
 
 const SelectBox = { Item, List };

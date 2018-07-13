@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'semantic-ui-react';
+import { Card, Button, Icon } from 'semantic-ui-react';
 import Picture from './Picture';
 
 export default class Part extends Component {
@@ -12,16 +12,16 @@ export default class Part extends Component {
                     <Card.Description>Description</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
-                    Add Storage
-                    <Button icon="plus" circular/>
+                <Button icon labelPosition="left">
+                        <Icon name='plus' />
+                        Add Storage
+                    </Button>
                 </Card.Content>
                 <Card.Content extra>
-                    Add Config map
-                    <Button icon="plus" circular/>
-                </Card.Content>
-                <Card.Content extra>
-                    Add Environment Variable 
-                    <Button icon="plus" circular/>
+                    <Button icon labelPosition="left">
+                        <Icon name='plus' />
+                        Add Config Map
+                    </Button>
                 </Card.Content>
           </Card>            
         );

@@ -1,6 +1,4 @@
-.template-item i {
-  width: 100%;
-}
+
 
 .template-item.dummy {
   font-family: 'Redacted Script' !important;
@@ -8,5 +6,30 @@
 
 .template-item.dummy .header {
   font-family: 'Redacted Script Bold' !important;
+}
+
+.template-item .picture {
+  display: inline-block;
+  margin: 10px 0 10px 10px;
+  width: 90px;
+}
+
+.template-item .picture img{
+  width: 100px;
+  margin-top: 10px;
+}
+
+
+.template-item .picture i{
+  font-size: 50px;
+}
+
+.ui.cards > .card.template-item {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.card.template-item .tags.extra {
+  padding: 10px;
 }
 

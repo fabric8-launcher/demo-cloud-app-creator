@@ -6,8 +6,8 @@ const isImage = value => value && value.startsWith('/images/');
 
 const content = value => (
   <div className="picture">
-    {!isImage(value) && (<Icon name={value} size="huge" />)}
-    {isImage(value) && (<Image src={value} height="64px" />)}
+    {!isImage(value) && (<Icon name={value} />)}
+    {isImage(value) && (<Image src={value} />)}
   </div>
 );
 

@@ -25,9 +25,7 @@ class App extends Component {
         <Dimmer active={this.state.mounting}>
           <Loader />
         </Dimmer>
-        <header className="app-header">
-          <h1 className="app-title">Welcome to the Cloud App Creator</h1>
-        </header>
+
         <BrowserRouter>
           <Switch>
             <Route exact path='/' component={Home}/>

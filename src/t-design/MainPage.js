@@ -2,6 +2,7 @@ import React from 'react';
 import { Checkbox, Container, Form, Menu } from 'semantic-ui-react';
 import SelectBox from '../components/SelectBox';
 import Step from './components/Step';
+import './MainPage.css';
 
 import logo from '../assets/img/pizza.svg';
 
@@ -81,9 +82,9 @@ class MainPage extends React.Component {
 
   render() {
     return (
-      <div className="create-page">
+      <div className="t-design-mainpage">
         <Menu vertical inverted fixed="left">
-          <Menu.Item>
+          <Menu.Item className="logo">
             <a href="/"><img src={logo} className="app-logo" alt="logo"/></a>
           </Menu.Item>
           <Menu.Item>

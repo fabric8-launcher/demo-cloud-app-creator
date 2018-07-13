@@ -13,8 +13,8 @@ const Item = (props) => (
       <Card.Description>{props.description}</Card.Description>
     </Card.Content>
     {props.tags.length > 0 && (
-      <Card.Content extra>
-        <span className='tags'>{props.tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>
+      <Card.Content extra className='tags'>
+        <span>{props.tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>
       </Card.Content>
     )}
   </Card>

@@ -6,7 +6,7 @@ const SelectComponentStep = ({ action, id, title, icon }) => (
         title={title}
         description="Add any other component from the full list of components available"
         icon={icon}
-        extra={(<a href="#" style={{float: 'right'}}>Click here to show components</a>)}
+        extra={(<a style={{float: 'right'}}>Click here to show components</a>)}
     />
 );
 

@@ -49,7 +49,7 @@ export default class Lane extends Component {
                                 }>
                             <Modal.Header>Select a Service</Modal.Header>
                             <Modal.Content>
-                                    <SelectBox.List itemsPerRow={5} onClick={i => this.addPart(i)}>
+                                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
                                         <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
                                         <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />
                                         <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope"/>

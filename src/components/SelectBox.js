@@ -7,11 +7,13 @@ import Picture from './Picture';
 
 const Item = (props) => (
   <Card as="a" className={`template-item ${props.dummy && 'dummy'}`} onClick={props.onClick}>
-    <Picture value={props.picture} />
-    <Card.Content>
-      <Card.Header>{props.title}</Card.Header>
-      <Card.Description>{props.description}</Card.Description>
-    </Card.Content>
+    <div className="main-content">
+      <Picture value={props.picture} />
+      <Card.Content>
+        <Card.Header>{props.title}</Card.Header>
+        <Card.Description>{props.description}</Card.Description>
+      </Card.Content>
+    </div>
     {props.tags.length > 0 && (
       <Card.Content extra className='tags'>
         <span>{props.tags.map((t, index) => (<Label key={index}>{t}</Label>))}</span>

@@ -10,8 +10,8 @@
 
 .template-item .picture {
   display: inline-block;
-  margin: 10px 0 10px 10px;
   width: 90px;
+  text-align: center;
 }
 
 .template-item .picture img{
@@ -21,13 +21,32 @@
 
 
 .template-item .picture i{
-  font-size: 50px;
+  font-size: 40px;
+  color: #383838;
 }
 
-.ui.cards > .card.template-item {
-  flex-direction: row;
-  flex-wrap: wrap;
+.template-item > .main-content {
+  padding: 0;
+  display: flex;
 }
+
+.template-item > .main-content .content {
+  padding: 10px;
+}
+
+.template-item > .main-content > .content > .header {
+  font-weight: 700;
+  font-size: 1.28571429em;
+  margin-top: -.21425em;
+  line-height: 1.28571429em;
+}
+
+.template-item > .main-content > .content > .description {
+  clear: both;
+  color: rgba(0,0,0,.68);
+}
+
+
 
 .card.template-item .tags.extra {
   padding: 10px;

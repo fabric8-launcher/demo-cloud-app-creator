@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SelectBox.css';
+import classNames from 'classnames';
 
 import { Card, Label } from 'semantic-ui-react'
 import Picture from './Picture';
 
 const Item = (props) => (
-  <Card as="a" className={`template-item ${props.dummy && 'dummy'}`} onClick={props.onClick} raised>
+  <Card as="a" className={classNames('template-item', {'dummy': props.dummy, 'selected': props.selected})} onClick={props.onClick} raised>
     <div className="main-content">
       <Picture value={props.picture} />
       <Card.Content>

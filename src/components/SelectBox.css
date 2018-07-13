@@ -1,11 +1,14 @@
 
-
 .template-item.dummy {
   font-family: 'Redacted Script' !important;
 }
 
 .template-item.dummy .header {
   font-family: 'Redacted Script Bold' !important;
+}
+
+.template-item.selected {
+  background-color: gainsboro !important;
 }
 
 .template-item .picture {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Container, Icon, List, Modal } from 'semantic-ui-react';
-import Part from './Part';
+import { Button, Container, Icon, Modal, Step, Tab } from 'semantic-ui-react';
 import SelectBox from '../../components/SelectBox';
+import Part from './Part';
 
 export default class Lane extends Component {
     constructor(props) {
@@ -9,8 +9,25 @@ export default class Lane extends Component {
         this.state = {
           title: props.title,
           modalOpen: false,          
-          parts: []
+          parts: [],
+          panes : [
+            { menuItem: 'Applications', render: () => 
+                <Tab.Pane>                                        
+                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
+                        <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
+                        <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />
+                    </SelectBox.List>
+                </Tab.Pane> },
+            { menuItem: 'Services', render: () => 
+                <Tab.Pane>                                        
+                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
+                        <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope"/>
+                        <SelectBox.Item title="Postgres DB" description="Database" tags={['database']} picture="database"/>
+                    </SelectBox.List>
+                </Tab.Pane> }
+          ]
         };
+
     }
 
     handleModalOpen = () => this.setState({ modalOpen: true })
@@ -29,13 +46,11 @@ export default class Lane extends Component {
                 <fieldset>
                     <legend>{this.state.title}</legend>
                     <Container>
-                        <List horizontal>
+                        <Step.Group>
                             {this.state.parts.map((item, index) => {return (
-                            <List.Item key={item}>
-                                <Part name="{item}"/>
-                            </List.Item>
+                                <Part name="{item}" key={index}/>
                             )})}
-                        </List>
+                        </Step.Group>
                         <Modal closeIcon
                                 open={this.state.modalOpen}
                                 onClose={this.handleModalClose}
@@ -49,14 +64,12 @@ export default class Lane extends Component {
                                 }>
                             <Modal.Header>Select a Service</Modal.Header>
                             <Modal.Content>
-                                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
-                                        <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
-                                        <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />
-                                        <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope"/>
-                                        <SelectBox.Item title="Postgres DB" description="Database" tags={['database']} picture="database"/>
-                                    </SelectBox.List>                            
+                                <SelectBox.List onClick={i => this.addPart(i)} fluid>
+                                    <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
+                                    <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />                                
+                                </SelectBox.List>                                                               
                             </Modal.Content>
-                        </Modal>                        
+                        </Modal>
                     </Container>
                 </fieldset>
             </div>

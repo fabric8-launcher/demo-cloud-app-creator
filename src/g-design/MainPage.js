@@ -14,8 +14,7 @@ export default class MainPage extends Component {
               <FormInput label="Application name"/>
           </Form>
           <Header content="Let's put your components together"/>
-          <Lane title="Application" />
-          <Lane title="Services"/>
+          <Lane title="Components" />
           <Lane title="Resources"/>
         </Container>
       </div>

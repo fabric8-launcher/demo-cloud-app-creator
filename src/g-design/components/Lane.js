@@ -24,7 +24,15 @@ export default class Lane extends Component {
                         <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope"/>
                         <SelectBox.Item title="Postgres DB" description="Database" tags={['database']} picture="database"/>
                     </SelectBox.List>
+                </Tab.Pane> },
+            { menuItem: 'Resources', render: () => 
+                <Tab.Pane>                                        
+                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
+                        <SelectBox.Item title="ConfigMap" description="Config Map is a configuration map" tags={['configuration']} picture="table"/>
+                        <SelectBox.Item title="Secret" description="For your passwords" tags={['secret']} picture="lock"/>
+                    </SelectBox.List>
                 </Tab.Pane> }
+
           ]
         };
 
@@ -56,7 +64,7 @@ export default class Lane extends Component {
                                 onClose={this.handleModalClose}
                                 trigger={
                                     <Button icon circular labelPosition="left" animated='fade' onClick={this.handleModalOpen}>
-                                        <Button.Content hidden>Add Service</Button.Content>
+                                        <Button.Content hidden>Add</Button.Content>
                                         <Button.Content visible>
                                             <Icon name='plus' />
                                         </Button.Content>
@@ -64,11 +72,8 @@ export default class Lane extends Component {
                                 }>
                             <Modal.Header>Select a Service</Modal.Header>
                             <Modal.Content>
-                                <SelectBox.List onClick={i => this.addPart(i)} fluid>
-                                    <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
-                                    <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />                                
-                                </SelectBox.List>                                                               
-                            </Modal.Content>
+                                <Tab panes={this.state.panes}/>
+                           </Modal.Content>
                         </Modal>
                     </Container>
                 </fieldset>

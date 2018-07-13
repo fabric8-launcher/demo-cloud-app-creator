@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Table, Icon } from 'semantic-ui-react';
+import { Icon, Table } from 'semantic-ui-react';
 
 export default class BoosterMatrix extends Component {
     state = { boosters:{}, runtimes: [], missions: []  }
@@ -26,6 +26,7 @@ export default class BoosterMatrix extends Component {
             id: booster.mission + "-" + booster.runtime,
             mission: booster.mission,
             runtime: booster.runtime,
+            git: _.get(booster, 'source.git.url'),
             minishift: this.checkRunsOnCluster(booster, 'local'),
             starter: this.checkRunsOnCluster(booster, 'starter'),
             pro: this.checkRunsOnCluster(booster, 'pro'),
@@ -81,9 +82,13 @@ export default class BoosterMatrix extends Component {
                             .filter(booster => booster != null)
                             .map(booster=> (
                                 <Table.Row key={booster.id}>
-                                    <Table.Cell>{_.capitalize(booster.runtime)}</Table.Cell>
+                                    <Table.Cell>
+                                        <a href={booster.git} target="_new">
+                                            {_.capitalize(booster.runtime)}
+                                        </a>
+                                    </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.minishift} negative={!booster.minishift}>
-                                    <Icon color={(booster.minishift && 'green') || (!booster.minishift && 'red')} name={(booster.minishift && 'checkmark') ||
+                                         <Icon color={(booster.minishift && 'green') || (!booster.minishift && 'red')} name={(booster.minishift && 'checkmark') ||
                                             (!booster.minishift && 'close')} size='large' />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.starter} negative={!booster.starter}>
@@ -91,10 +96,10 @@ export default class BoosterMatrix extends Component {
                                             (!booster.starter && 'close')} size='large' />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.pro} negative={!booster.pro}>
-                                        <Icon color={(booster.pro && 'green') || (!booster.pro && 'red')} name={(booster.pro && 'checkmark') ||              (!booster.pro && 'close')} size='large' />
+                                        <Icon color={(booster.pro && 'green') || (!booster.pro && 'red')} name={(booster.pro && 'checkmark') ||                             (!booster.pro && 'close')} size='large' />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.osio} negative={!booster.osio}>
-                                        <Icon color={(booster.osio && 'green') || (!booster.osio && 'red')} name={(booster.osio && 'checkmark') ||          (!booster.osio && 'close')} size='large' />
+                                        <Icon color={(booster.osio && 'green') || (!booster.osio && 'red')} name={(booster.osio && 'checkmark') ||                          (!booster.osio && 'close')} size='large' />
                                     </Table.Cell>
                                 </Table.Row>
                         ))}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, Container, Form, Menu } from 'semantic-ui-react';
 import SelectBox from '../components/SelectBox';
-import Step from '../components/Step';
+import Step from './components/Step';
 
 import logo from '../assets/img/pizza.svg';
 
@@ -58,7 +58,7 @@ const messageBrokerStep = ({ action }) => (
   </Step.Item>
 );
 
-class Create extends React.Component {
+class MainPage extends React.Component {
 
   constructor(props) {
     super(props);
@@ -103,4 +103,4 @@ class Create extends React.Component {
 }
 
 
-export default Create;
+export default MainPage;

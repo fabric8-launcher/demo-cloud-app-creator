@@ -6,9 +6,9 @@ const Home = () => (
     <Container text>
       <Header as='h1' content='Think your application. Imagine WE can create it!' />
       <Header as='h2' content='This is a reality...' />
-      <Button primary size='huge' as="a" href="/create">Get Started Now<Icon name='right arrow' /></Button>
+      <Button primary size='huge' as="a" href="/t-design">Start with T<Icon name='right arrow' /></Button>
       <Divider horizontal>Or</Divider>
-      <Button primary size='huge' as="a" href="/layout2">Try this second demo<Icon name='right arrow' /></Button>
+      <Button primary size='huge' as="a" href="/g-design">Start with G<Icon name='right arrow' /></Button>
     </Container>
   </div>
 );

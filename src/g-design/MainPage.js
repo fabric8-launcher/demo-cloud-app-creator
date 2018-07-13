@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Form, FormInput, Header } from 'semantic-ui-react';
-import Lane from '../components/Lane';
+import Lane from './components/Lane';
 
-export default class Layout2 extends Component {
+export default class MainPage extends Component {
   state = {}
   handleChange = (e, { value }) => this.setState({ value })
 

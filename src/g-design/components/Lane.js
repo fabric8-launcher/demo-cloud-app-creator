@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Container, Icon, List, Modal } from 'semantic-ui-react';
 import Part from './Part';
-import SelectBox from './SelectBox';
+import SelectBox from '../../components/SelectBox';
 
 export default class Lane extends Component {
     constructor(props) {

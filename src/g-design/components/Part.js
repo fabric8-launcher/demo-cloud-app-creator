@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Button, Icon } from 'semantic-ui-react';
-import Picture from './Picture';
+import Picture from '../../components/Picture';
 
 export default class Part extends Component {
     render() {

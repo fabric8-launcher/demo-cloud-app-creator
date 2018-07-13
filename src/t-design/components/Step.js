@@ -4,7 +4,7 @@ import './Step.css';
 
 import { Item as BaseItem } from 'semantic-ui-react'
 import { List as BaseList } from 'semantic-ui-react'
-import Picture from './Picture';
+import Picture from '../../components/Picture';
 
 const Item = (props) => (
     <BaseItem className={"step-item"}>

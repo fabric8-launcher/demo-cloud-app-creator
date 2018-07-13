@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
-import Create from './pages/Create';
-import Layout2 from './pages/Layout2';
+import TMainPage from './t-design/MainPage';
+import GMainPage from './g-design/MainPage';
 import Home from './pages/Home';
 import BoosterMatrix from './pages/BoosterMatrix';
 
@@ -31,8 +31,8 @@ class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route exact path='/' component={Home}/>
-            <Route path='/create' component={Create}/>
-            <Route path='/layout2' component={Layout2}/>
+            <Route path='/t-design' component={TMainPage}/>
+            <Route path='/g-design' component={GMainPage}/>
             <Route path='/matrix' component={BoosterMatrix}/>
           </Switch>
         </BrowserRouter>

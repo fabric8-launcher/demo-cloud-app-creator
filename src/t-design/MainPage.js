@@ -20,14 +20,12 @@ const templates = [
     { id:3, title:"Vert.x stack", description:"Full stack from UI to REST to DB", tags:['backend', 'frontend'], step: (key) => (
             <MessageBrokerStep key={key} />
         )},
-    { id:4, title:"Messaging", description:"AMQ Queue", tags:['messaging', 'amq', 'backend'], step: (key) => (
-            <MessageBrokerStep key={key} />
-        )},
-    { id:5, title:"Messaging", description:"AMQ Topic", tags:['messaging', 'amq', 'backend'], step: (key) => (
-            <MessageBrokerStep key={key} />
-        )},
+    { id:4, dummy: true },
+    { id:5, dummy: true },
     { id:6, dummy: true },
-    { id:7, dummy: true },
+    { id:7, title:"Messaging", description:"Messaging app using RedHat AMQ", tags:['messaging', 'amq', 'backend'], step: (key) => (
+            <MessageBrokerStep key={key} />
+        )},
     { id:8, dummy: true },
     { id:9, dummy: true },
     { id:10, title:"Custom", description:"Fully custom design", step: (key) => (

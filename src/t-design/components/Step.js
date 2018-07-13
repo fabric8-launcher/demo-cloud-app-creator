@@ -25,10 +25,14 @@ const Item = (props) => (
 Item.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  extra: PropTypes.node,
+  children: PropTypes.node,
 };
 
 Item.defaultProps = {
   icon: null,
+  extra: null,
+  children: null,
 };
 
 const List = (props) => (

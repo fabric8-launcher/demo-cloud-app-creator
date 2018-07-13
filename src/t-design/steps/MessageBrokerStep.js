@@ -32,7 +32,6 @@ const MessageBrokerStep = ({ action, id, title, icon }) => (
   </Step.Item>
 );
 
-
 MessageBrokerStep.defaultProps = {
   id: 'message-broker',
   title: 'Message Broker: AMQ',

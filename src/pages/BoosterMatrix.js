@@ -27,12 +27,38 @@ export default class BoosterMatrix extends Component {
             id: booster.mission + "-" + booster.runtime,
             mission: booster.mission,
             runtime: booster.runtime,
-            minishift: _.get(booster, 'metadata.app.launcher.runsOn',[]).includes('local'),
-            starter: _.get(booster, 'metadata.app.launcher.runsOn',[]).includes('starter'),
-            pro: _.get(booster, 'metadata.app.launcher.runsOn',[]).includes('pro'),
+            minishift: this.checkRunsOnCluster(booster, 'local'),
+            starter: this.checkRunsOnCluster(booster, 'starter'),
+            pro: this.checkRunsOnCluster(booster, 'pro'),
             osio:_.get(booster, 'metadata.osio.enabled',false)
         };
     }
+
+    checkRunsOnCluster = (booster, cluster) => {
+        let defaultResult = true;
+        let runsOn = _.get(booster, 'metadata.app.launcher.runsOn');
+        if (typeof runsOn === 'string') {
+          runsOn = [runsOn];
+        }
+        if (runsOn && runsOn.length !== 0) {
+          for (let i = 0; i < runsOn.length; i++) {
+            let supportedCategory = runsOn[i];
+            if (!supportedCategory.startsWith('!')) {
+              defaultResult = false;
+            }
+            if (supportedCategory.toLowerCase() === 'all'
+              || supportedCategory.toLowerCase() === '*'
+              || supportedCategory.toLocaleLowerCase() === cluster) {
+              return true;
+            } else if (supportedCategory.toLowerCase() === 'none'
+              || supportedCategory.toLowerCase() === '!*'
+              || supportedCategory.toLowerCase() === ('!' + cluster)) {
+              return false;
+            }
+          }
+        }
+        return defaultResult;
+      }
 
     render() {
         return (
@@ -52,16 +78,17 @@ export default class BoosterMatrix extends Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {/* {_.map(this.state.runtimes, runtime => this.state.boosters[mission.id + "-" + runtime.id])
+                        {_.map(this.state.runtimes, runtime => this.state.boosters[mission.id + "-" + runtime.id])
+                            .filter(booster => booster != null)
                             .map(booster=> (
-                                <Table.Row key={booster}>
-                                    <Table.Cell>{booster}</Table.Cell>
+                                <Table.Row key={booster.id}>
+                                    <Table.Cell>{booster.id}</Table.Cell>
                                     <Table.Cell></Table.Cell>
                                     <Table.Cell negative></Table.Cell>
                                     <Table.Cell>Cell</Table.Cell>
                                     <Table.Cell></Table.Cell>                                    
                                 </Table.Row>
-                        ))} */}
+                        ))}
                     </Table.Body>
                 </Table>
             ))}            

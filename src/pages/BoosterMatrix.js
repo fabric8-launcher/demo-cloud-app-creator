@@ -88,20 +88,28 @@ export default class BoosterMatrix extends Component {
                                         </a>
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.minishift} negative={!booster.minishift}>
-                                         <Icon color={(booster.minishift && 'green') || (!booster.minishift && 'red')} name={(booster.minishift && 'checkmark') ||
-                                            (!booster.minishift && 'close')} size='large' />
+                                         <Icon size='large'
+                                            color={(booster.minishift && 'green') || (!booster.minishift && 'red')}
+                                            name={(booster.minishift && 'checkmark') || (!booster.minishift && 'close')}  
+                                            />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.starter} negative={!booster.starter}>
-                                        <Icon color={(booster.starter && 'green') || (!booster.starter && 'red')} name={(booster.starter && 'checkmark') ||
-                                            (!booster.starter && 'close')} size='large' />
+                                        <Icon size='large'
+                                            color={(booster.starter && 'green') || (!booster.starter && 'red')}
+                                            name={(booster.starter && 'checkmark') || (!booster.starter && 'close')}
+                                            />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.pro} negative={!booster.pro}>
-                                        <Icon color={(booster.pro && 'green') || (!booster.pro && 'red')} name={(booster.pro && 'checkmark') ||
-                                            (!booster.pro && 'close')} size='large' />
+                                        <Icon size='large'
+                                            color={(booster.pro && 'green') || (!booster.pro && 'red')} 
+                                            name={(booster.pro && 'checkmark') || (!booster.pro && 'close')}  
+                                            />
                                     </Table.Cell>
                                     <Table.Cell textAlign="center" positive={booster.osio} negative={!booster.osio}>
-                                        <Icon color={(booster.osio && 'green') || (!booster.osio && 'red')} name={(booster.osio && 'checkmark') ||
-                                            (!booster.osio && 'close')} size='large' />
+                                        <Icon size='large'
+                                            color={(booster.osio && 'green') || (!booster.osio && 'red')} 
+                                            name={(booster.osio && 'checkmark') || (!booster.osio && 'close')} 
+                                             />
                                     </Table.Cell>
                                 </Table.Row>
                         ))}

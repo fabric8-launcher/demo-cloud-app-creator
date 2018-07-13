@@ -15,8 +15,7 @@ export default class BoosterMatrix extends Component {
         this.setState({
             missions: response.missions,
             runtimes: response.runtimes,
-            boosters: _.keyBy(response.boosters.map(this.enrichBooster), 
-                booster => booster.mission + "-" + booster.runtime)
+            boosters: _.keyBy(response.boosters.map(this.enrichBooster), booster => booster.id)
         });
         return response;
     }
@@ -26,6 +25,7 @@ export default class BoosterMatrix extends Component {
             id: booster.mission + "-" + booster.runtime,
             mission: booster.mission,
             runtime: booster.runtime,
+            version: booster.version,
             git: _.get(booster, 'source.git.url'),
             minishift: this.checkRunsOnCluster(booster, 'local'),
             starter: this.checkRunsOnCluster(booster, 'starter'),

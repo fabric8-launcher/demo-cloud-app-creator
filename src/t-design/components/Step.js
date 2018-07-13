@@ -10,10 +10,15 @@ const Item = (props) => (
       <BaseItem.Content>
         <BaseItem.Header>{props.title}</BaseItem.Header>
         <BaseItem.Meta>{props.description}</BaseItem.Meta>
+        <BaseItem.Extra>
+          {props.extra}
+        </BaseItem.Extra>
       </BaseItem.Content>
-      <BaseItem.Content className={'step-body'}>
-        {props.children}
-      </BaseItem.Content>
+      {props.children && (
+        <BaseItem.Content className={'step-body'}>
+          {props.children}
+        </BaseItem.Content>
+      )}
     </BaseItem>
 );
 

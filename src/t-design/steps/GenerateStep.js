@@ -8,9 +8,8 @@ const GenerateStep = ({ action, id, title, icon }) => (
         title={title}
         description="Click the button on the right to generate your application"
         icon={icon}
-    >
-      <Button content="Generate" icon="right arrow" labelPosition="right" />
-    </Step.Item>
+        extra={(<Button primary floated='right' icon="right arrow" labelPosition="right" content="Generate"/>)}
+    />
 );
 
 GenerateStep.defaultProps = {

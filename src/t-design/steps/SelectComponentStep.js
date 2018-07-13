@@ -6,9 +6,8 @@ const SelectComponentStep = ({ action, id, title, icon }) => (
         title={title}
         description="Add any other component from the full list of components available"
         icon={icon}
-    >
-        <a href="#">Click here to show components</a>
-    </Step.Item>
+        extra={(<a href="#" style={{float: 'right'}}>Click here to show components</a>)}
+    />
 );
 
 SelectComponentStep.defaultProps = {

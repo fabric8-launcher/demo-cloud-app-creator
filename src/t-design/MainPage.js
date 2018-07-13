@@ -7,7 +7,8 @@ import logo from '../assets/img/pizza.svg';
 import Step from './components/Step';
 import MessageBrokerStep from './steps/MessageBrokerStep';
 import TemplateStep from './steps/TemplateStep';
-
+import SelectComponentStep from "./steps/SelectComponentStep";
+import GenerateStep from "./steps/GenerateStep";
 
 class MainPage extends React.Component {
 
@@ -44,7 +45,7 @@ class MainPage extends React.Component {
           </Menu.Item>
         </Menu>
         <Container text>
-          <Step.List>
+          <Step.List nonEmptyStep={<SelectComponentStep />} generateStep={<GenerateStep />}>
             {this.state.steps}
           </Step.List>
         </Container>

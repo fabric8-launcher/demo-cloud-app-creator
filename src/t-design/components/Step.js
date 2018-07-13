@@ -29,8 +29,20 @@ Item.defaultProps = {
 const List = (props) => (
     <BaseItem.Group className={"step-list"}>
         {props.children}
+        {React.Children.count(props.children) > 1 && props.nonEmptyStep != null && props.nonEmptyStep}
+        {React.Children.count(props.children) > 1 && props.generateStep != null && props.generateStep}
     </BaseItem.Group>
 );
+
+List.propTypes = {
+    nonEmptyStep: PropTypes.object,
+    generateStep: PropTypes.object,
+};
+
+List.defaultProps = {
+    nonEmptyStep: null,
+    generateStep: null
+};
 
 const Index = (props) => (
   <BaseStep.Group vertical>

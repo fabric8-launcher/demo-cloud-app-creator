@@ -1,10 +1,8 @@
 import React from 'react';
-import SelectBox from '../../components/SelectBox';
 import Step from '../components/Step';
 
-const GenerateStep = ({ action, key, title, icon }) => (
+const GenerateStep = ({ action, id, title, icon }) => (
     <Step.Item
-        key={key}
         title={title}
         description="Click the button on the right to generate your application"
         icon={icon}
@@ -13,7 +11,7 @@ const GenerateStep = ({ action, key, title, icon }) => (
 );
 
 GenerateStep.defaultProps = {
-  key: 'generate',
+  id: 'generate',
   title: 'Ready to generate your application?',
   icon: 'paper plane outline'
 };

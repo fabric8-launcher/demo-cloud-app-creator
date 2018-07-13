@@ -1,10 +1,8 @@
 import React from 'react';
-import SelectBox from '../../components/SelectBox';
 import Step from '../components/Step';
 
-const SelectComponentStep = ({ action, key, title, icon }) => (
+const SelectComponentStep = ({ action, id, title, icon }) => (
     <Step.Item
-        key={key}
         title={title}
         description="Add any other component from the full list of components available"
         icon={icon}
@@ -13,7 +11,7 @@ const SelectComponentStep = ({ action, key, title, icon }) => (
 );
 
 SelectComponentStep.defaultProps = {
-  key: 'bottom-select-component',
+  id: 'bottom-select-component',
   title: 'Do you want another component?',
   icon: 'plus square outline'
 };

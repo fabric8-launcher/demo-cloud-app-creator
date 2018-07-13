@@ -6,7 +6,7 @@ import { Card, Label } from 'semantic-ui-react'
 import Picture from './Picture';
 
 const Item = (props) => (
-  <Card as="a" className={`template-item ${props.dummy && 'dummy'}`} onClick={props.onClick}>
+  <Card as="a" className={`template-item ${props.dummy && 'dummy'}`} onClick={props.onClick} raised>
     <div className="main-content">
       <Picture value={props.picture} />
       <Card.Content>
@@ -41,7 +41,7 @@ Item.defaultProps = {
 };
 
 const List = (props) => (
-  <Card.Group {...props} centered raised />
+  <Card.Group {...props} centered />
 );
 
 const SelectBox = { Item, List };

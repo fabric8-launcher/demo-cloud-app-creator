@@ -2,7 +2,7 @@ import React from 'react';
 import Step from '../components/Step';
 import { Checkbox, Form } from 'semantic-ui-react';
 
-const MessageBrokerStep = ({ action, key, title, icon }) => (
+const MessageBrokerStep = ({ action, id, title, icon }) => (
   <Step.Item
     title={title}
     description="A message broker based on Red Hat AMQ."
@@ -34,7 +34,7 @@ const MessageBrokerStep = ({ action, key, title, icon }) => (
 
 
 MessageBrokerStep.defaultProps = {
-  key: 'message-broker',
+  id: 'message-broker',
   title: 'Message Broker: AMQ',
   icon: 'bullhorn'
 };

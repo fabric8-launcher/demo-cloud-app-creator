@@ -17,7 +17,7 @@ class MainPage extends React.Component {
     this.addStep.bind(this);
     this.state = {
       steps: [
-        (<TemplateStep action={() => this.addMessageBrokerStep()} />),
+        (<TemplateStep key={0} action={() => this.addMessageBrokerStep()} />),
       ]
     };
 
@@ -28,7 +28,7 @@ class MainPage extends React.Component {
   }
 
   addMessageBrokerStep() {
-    this.addStep((<MessageBrokerStep action={() => {}}/>));
+    this.addStep((<MessageBrokerStep key={this.state.steps.length} action={() => {}}/>));
   }
 
   render() {

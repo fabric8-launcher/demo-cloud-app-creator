@@ -2,7 +2,7 @@ import React from 'react';
 import SelectBox from '../../components/SelectBox';
 import Step from '../components/Step';
 
-const TemplateStep = ({ action, key, title, icon }) => (
+const TemplateStep = ({ action, id, title, icon }) => (
   <Step.Item
     title={title}
     description="You can choose one of those predefined templates to create you app, you will still be able to customize it once selected."
@@ -25,7 +25,7 @@ const TemplateStep = ({ action, key, title, icon }) => (
 
 
 TemplateStep.defaultProps = {
-  key: 'select-template',
+  id: 'select-template',
   title: 'Select a template',
   icon: 'wpforms'
 };

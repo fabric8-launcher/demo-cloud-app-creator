@@ -30,7 +30,7 @@ export default class BoosterMatrix extends Component {
             minishift: this.checkRunsOnCluster(booster, 'local'),
             starter: this.checkRunsOnCluster(booster, 'starter'),
             pro: this.checkRunsOnCluster(booster, 'pro'),
-            osio:_.get(booster, 'metadata.osio.enabled',false)
+            osio:_.get(booster, 'metadata.app.osio.enabled',false)
         };
     }
 

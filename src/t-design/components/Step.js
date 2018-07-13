@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Step.css';
 
-import { Item as BaseItem } from 'semantic-ui-react'
-import { List as BaseList } from 'semantic-ui-react'
-import Picture from '../../components/Picture';
+import { Icon, Item as BaseItem, Step as BaseStep } from 'semantic-ui-react'
 
 const Item = (props) => (
     <BaseItem className={"step-item"}>
-      <Picture value={props.picture} />
+      <Icon name={props.icon} />
       <BaseItem.Content>
         <BaseItem.Header>{props.title}</BaseItem.Header>
         <BaseItem.Meta>{props.description}</BaseItem.Meta>
@@ -21,11 +19,11 @@ const Item = (props) => (
 
 Item.propTypes = {
   title: PropTypes.string.isRequired,
-  picture: PropTypes.string,
+  icon: PropTypes.string,
 };
 
 Item.defaultProps = {
-  picture: null,
+  icon: null,
 };
 
 const List = (props) => (
@@ -35,9 +33,18 @@ const List = (props) => (
 );
 
 const Index = (props) => (
-    <BaseList className={"step-index"}>
-        {props.children.map(step => (<BaseList.Item key={step.key}>{step.props.title}</BaseList.Item>))}
-    </BaseList>
+  <BaseStep.Group vertical>
+  {
+    props.children.map(step => (
+      <BaseStep key={step.key}>
+        <Icon name={step.props.icon} />
+        <BaseStep.Content>
+          <BaseStep.Title>{step.props.title}</BaseStep.Title>
+        </BaseStep.Content>
+      </BaseStep>
+    ))
+  }
+  </BaseStep.Group>
 );
 
 const Step = { Item, List, Index };

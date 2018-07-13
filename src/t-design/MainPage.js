@@ -11,7 +11,7 @@ const templateStep = ({ action }) => (
       key="select-template"
       title="Select a template"
       description="You can choose one of those predefined templates to create you app, you will still be able to customize it once selected."
-      picture="wpforms"
+      icon="wpforms"
   >
     <SelectBox.List>
       <SelectBox.Item title="MicroService" description="A simple MicroService" tags={['backend', 'microservice']} picture="/images/microservices.png" onClick={action}/>
@@ -33,7 +33,7 @@ const messageBrokerStep = ({ action }) => (
     key="message-broker"
     title="Message Broker: AMQ"
     description="A message broker based on Red Hat AMQ."
-    picture="bullhorn"
+    icon="bullhorn"
   >
     <Form>
       <Form.Field>

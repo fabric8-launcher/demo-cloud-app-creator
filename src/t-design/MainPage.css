@@ -1,8 +1,12 @@
 .t-design-mainpage {
-  margin-left: 220px;
+  margin-left: 350px;
   padding-top: 100px;
 }
 
 .menu > .item.logo {
   text-align: center;
+}
+
+.ui.vertical.menu {
+  width: 320px;
 }

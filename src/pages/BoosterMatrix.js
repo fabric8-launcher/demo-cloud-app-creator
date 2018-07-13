@@ -18,11 +18,13 @@ export default class BoosterMatrix extends Component {
             boosters: _.keyBy(response.boosters.map(this.findBooster), 
                 booster => booster.mission + "-" + booster.runtime)
         });
+        console.log(this.state.boosters)
         return response;
     }
 
     findBooster = (booster) => {
         return {
+            id: booster.mission + "-" + booster.runtime,
             mission: booster.mission,
             runtime: booster.runtime,
             minishift: _.get(booster, 'metadata.app.launcher.runsOn',[]).includes('local'),
@@ -37,7 +39,7 @@ export default class BoosterMatrix extends Component {
         return (
             <div className="booster-matrix">
             {this.state.missions.map(mission => (
-                <Table>
+                <Table key={mission.id}>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell colSpan="5" singleLine>{mission.name}</Table.HeaderCell>
@@ -51,9 +53,10 @@ export default class BoosterMatrix extends Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {/* {this.state.boosters.map(booster =>  (
-                                <Table.Row>
-                                    <Table.Cell>{booster.runtime}</Table.Cell>
+                        {/* {_.map(this.state.runtimes, runtime => this.state.boosters[mission.id + "-" + runtime.id])
+                            .map(booster=> (
+                                <Table.Row key={booster}>
+                                    <Table.Cell>{booster}</Table.Cell>
                                     <Table.Cell></Table.Cell>
                                     <Table.Cell negative></Table.Cell>
                                     <Table.Cell>Cell</Table.Cell>

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 
 export default class BoosterMatrix extends Component {
     state = { boosters:{}, runtimes: [], missions: []  }
@@ -18,7 +18,6 @@ export default class BoosterMatrix extends Component {
             boosters: _.keyBy(response.boosters.map(this.enrichBooster), 
                 booster => booster.mission + "-" + booster.runtime)
         });
-        console.log(this.state.boosters)
         return response;
     }
 
@@ -71,10 +70,10 @@ export default class BoosterMatrix extends Component {
                         </Table.Row>
                         <Table.Row>
                             <Table.HeaderCell>Runtime</Table.HeaderCell>
-                            <Table.HeaderCell>Runs on Minishift?</Table.HeaderCell>
-                            <Table.HeaderCell>Runs on OpenShift Starter Cluster?</Table.HeaderCell>
-                            <Table.HeaderCell>Runs on OpenShift Pro Cluster?</Table.HeaderCell>
-                            <Table.HeaderCell>Runs on OpenShift.io?</Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">Runs on Minishift?</Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">Runs on OpenShift Starter Cluster?</Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">Runs on OpenShift Pro Cluster?</Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">Runs on OpenShift.io?</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -82,11 +81,21 @@ export default class BoosterMatrix extends Component {
                             .filter(booster => booster != null)
                             .map(booster=> (
                                 <Table.Row key={booster.id}>
-                                    <Table.Cell>{booster.id}</Table.Cell>
-                                    <Table.Cell></Table.Cell>
-                                    <Table.Cell negative></Table.Cell>
-                                    <Table.Cell>Cell</Table.Cell>
-                                    <Table.Cell></Table.Cell>                                    
+                                    <Table.Cell>{_.capitalize(booster.runtime)}</Table.Cell>
+                                    <Table.Cell textAlign="center" positive={booster.minishift} negative={!booster.minishift}>
+                                    <Icon color={(booster.minishift && 'green') || (!booster.minishift && 'red')} name={(booster.minishift && 'checkmark') ||
+                                            (!booster.minishift && 'close')} size='large' />
+                                    </Table.Cell>
+                                    <Table.Cell textAlign="center" positive={booster.starter} negative={!booster.starter}>
+                                        <Icon color={(booster.starter && 'green') || (!booster.starter && 'red')} name={(booster.starter && 'checkmark') ||
+                                            (!booster.starter && 'close')} size='large' />
+                                    </Table.Cell>
+                                    <Table.Cell textAlign="center" positive={booster.pro} negative={!booster.pro}>
+                                        <Icon color={(booster.pro && 'green') || (!booster.pro && 'red')} name={(booster.pro && 'checkmark') ||              (!booster.pro && 'close')} size='large' />
+                                    </Table.Cell>
+                                    <Table.Cell textAlign="center" positive={booster.osio} negative={!booster.osio}>
+                                        <Icon color={(booster.osio && 'green') || (!booster.osio && 'red')} name={(booster.osio && 'checkmark') ||          (!booster.osio && 'close')} size='large' />
+                                    </Table.Cell>
                                 </Table.Row>
                         ))}
                     </Table.Body>

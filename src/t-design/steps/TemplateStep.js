@@ -1,33 +1,55 @@
 import React from 'react';
 import SelectBox from '../../components/SelectBox';
 import Step from '../components/Step';
+import PropTypes from "prop-types";
 
-const TemplateStep = ({ action, id, title, icon }) => (
-  <Step.Item
-    title={title}
-    description="You can choose one of those predefined templates to create you app, you will still be able to customize it once selected."
-    icon={icon}
-  >
-    <SelectBox.List>
-      <SelectBox.Item title="MicroService" description="A simple MicroService" tags={['backend', 'microservice']} picture="/images/microservices.png" onClick={action}/>
-      <SelectBox.Item title="CRUD" description="A simple CRUD App" tags={['backend', 'frontend']} picture="database" onClick={action}/>
-      <SelectBox.Item title="Vert.x stack" description="Full stack from UI to REST to DB" tags={['backend', 'frontend']} onClick={action}/>
-      <SelectBox.Item title="Messaging" description="AMQ Queue" tags={['messaging', 'amq', 'backend']} onClick={action}/>
-      <SelectBox.Item title="Messaging" description="AMQ Topic" tags={['messaging', 'amq', 'backend']} onClick={action}/>
-      <SelectBox.Item dummy onClick={action}/>
-      <SelectBox.Item dummy onClick={action}/>
-      <SelectBox.Item dummy onClick={action}/>
-      <SelectBox.Item dummy onClick={action}/>
-      <SelectBox.Item title="Custom" description="Fully custom design" onClick={action} />
-    </SelectBox.List>
-  </Step.Item>
-);
+class TemplateStep extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.onSelect.bind(this);
+        this.state = {
+            selected: {}
+        }
+    }
+
+    onSelect(item) {
+        this.setState({ selected: item });
+        this.props.action(item);
+    }
+
+    render() {
+        return (
+            <Step.Item
+                title={this.props.title}
+                description="You can choose one of those predefined templates to create you app, you will still be able to customize it once selected."
+                icon={this.props.icon}
+            >
+                <SelectBox.List>
+                {
+                    this.props.items.map((item, index) => (
+                        <SelectBox.Item key={index} {...item} selected={item.id===this.state.selected.id} onClick={() => this.onSelect(item)}/>
+                    ))
+                }
+                </SelectBox.List>
+            </Step.Item>
+        );
+    }
+}
+
+TemplateStep.propTypes = {
+    id: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    items: PropTypes.array,
+};
 
 TemplateStep.defaultProps = {
-  id: 'select-template',
-  title: 'Select a template',
-  icon: 'wpforms'
+    id: 'select-template',
+    title: 'Select a template',
+    icon: 'wpforms',
+    items: [],
+    action: (item) => {},
 };
 
 export default TemplateStep;

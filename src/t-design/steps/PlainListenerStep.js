@@ -31,7 +31,7 @@ const PlainListenerStep = ({ action, id, title, icon }) => (
 );
 
 PlainListenerStep.defaultProps = {
-  title: 'Plain Listener',
+  title: 'Listener: Simple',
   icon: 'paper plane outline'
 };
 

@@ -31,7 +31,7 @@ const ToDatabaseListenerStep = ({ action, id, title, icon }) => (
 );
 
 ToDatabaseListenerStep.defaultProps = {
-  title: 'To Database',
+  title: 'Listener: To Database',
   icon: 'paper plane outline'
 };
 

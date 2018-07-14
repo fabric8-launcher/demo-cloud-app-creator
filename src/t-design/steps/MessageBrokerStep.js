@@ -1,6 +1,7 @@
 import React from 'react';
 import Step from '../components/Step';
 import { Checkbox, Form } from 'semantic-ui-react';
+import PropTypes from "prop-types";
 
 const MessageBrokerStep = ({ action, id, title, icon }) => (
   <Step.Item
@@ -32,9 +33,13 @@ const MessageBrokerStep = ({ action, id, title, icon }) => (
   </Step.Item>
 );
 
+MessageBrokerStep.propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+};
 
 MessageBrokerStep.defaultProps = {
-  id: 'message-broker',
   title: 'Message Broker: AMQ',
   icon: 'bullhorn'
 };

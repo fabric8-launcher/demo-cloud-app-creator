@@ -38,14 +38,13 @@ class TemplateStep extends React.Component {
 }
 
 TemplateStep.propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     icon: PropTypes.string,
     items: PropTypes.array,
 };
 
 TemplateStep.defaultProps = {
-    id: 'select-template',
     title: 'Select a template',
     icon: 'wpforms',
     items: [],

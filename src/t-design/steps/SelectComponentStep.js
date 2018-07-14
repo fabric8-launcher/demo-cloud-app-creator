@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Step from '../components/Step';
 import SelectBox from '../../components/SelectBox';
+import PropTypes from "prop-types";
 
 class SelectComponentStep extends Component {
   constructor(props) {
@@ -41,8 +42,13 @@ class SelectComponentStep extends Component {
   }
 }
 
+SelectComponentStep.propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+};
+
 SelectComponentStep.defaultProps = {
-  id: 'bottom-select-component',
   title: 'Do you want another component?',
   icon: 'plus square outline',
   action: () => {}

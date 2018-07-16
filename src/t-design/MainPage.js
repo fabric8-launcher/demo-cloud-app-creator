@@ -15,11 +15,6 @@ const flatMap = (f,xs) =>
     xs.reduce((acc, x) =>
         acc.concat(f(x)), []);
 
-const debug = (x, ...rest) => {
-    console.log(rest);
-    return x;
-}
-
 class MainPage extends React.Component {
 
   constructor(props) {

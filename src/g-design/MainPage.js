@@ -21,10 +21,9 @@ export default class MainPage extends Component {
                     <Container/>
           </fieldset>
           <Lane title="Components" />
-          <Lane title="Resources"/>
         </Container>
         <Divider/>
-        <Container text>
+        <Container>
           <Step.List>
             <GenerateStep/>
           </Step.List>

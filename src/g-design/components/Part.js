@@ -13,7 +13,6 @@ export default class Part extends Component {
                 <Step.Content>
                     <div className='ui two buttons'>
                         <Button icon="caret up" title="Create a Route" />
-                        <Button icon="caret down" title="Link to an existing service" />
                     </div>
                 </Step.Content>
             </Step>

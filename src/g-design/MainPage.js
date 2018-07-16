@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Form, FormInput, Header, Divider} from 'semantic-ui-react';
+import { Container, Divider, Form, FormInput, Header } from 'semantic-ui-react';
+import Step from '../t-design/components/Step';
 import GenerateStep from '../t-design/steps/GenerateStep';
 import Lane from './components/Lane';
-import Step from '../t-design/components/Step';
 
 export default class MainPage extends Component {
   state = {}
@@ -16,6 +16,10 @@ export default class MainPage extends Component {
               <FormInput label="Application name"/>
           </Form>
           <Header content="Let's put your components together"/>
+          <fieldset>
+                    <legend>Routes</legend>
+                    <Container/>
+          </fieldset>
           <Lane title="Components" />
           <Lane title="Resources"/>
         </Container>

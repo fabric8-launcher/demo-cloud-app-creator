@@ -13,23 +13,47 @@ export default class Lane extends Component {
           panes : [
             { menuItem: 'Applications', render: () => 
                 <Tab.Pane>                                        
-                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
-                        <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" />
-                        <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" />
+                    <SelectBox.List>
+                        <SelectBox.Item title="Java" description="A Java application" tags={['backend', 'frontend']} picture="coffee" onClick={i=> this.addPart({
+                            icon: 'coffee',
+                            title: 'Java',
+                            description: 'A Java Application'
+                         })}/>
+                        <SelectBox.Item title="JavaScript (Node.js)" description="An application written in JavaScript" tags={['backend', 'frontend']} picture="node" onClick={i=> this.addPart({
+                            icon: 'node',
+                            title: 'JavaScript (Node.js)',
+                            description: 'A JS App'
+                         })}/>
                     </SelectBox.List>
                 </Tab.Pane> },
             { menuItem: 'Services', render: () => 
                 <Tab.Pane>                                        
-                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
-                        <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope"/>
-                        <SelectBox.Item title="Postgres DB" description="Database" tags={['database']} picture="database"/>
+                    <SelectBox.List>
+                        <SelectBox.Item title="Messaging" description="Active MQ" tags={['messaging', 'amq', 'backend']} picture="envelope" onClick={i=> this.addPart({
+                            icon: 'envelope',
+                            title: 'Messaging',
+                            description: 'ActiveMQ'
+                         })}/>
+                        <SelectBox.Item title="Postgres DB" description="Database" tags={['database']} picture="database" onClick={i=> this.addPart({
+                            icon: 'database',
+                            title: 'Postgres DB',
+                            description: 'Database'
+                         })}/>
                     </SelectBox.List>
                 </Tab.Pane> },
             { menuItem: 'Resources', render: () => 
                 <Tab.Pane>                                        
-                    <SelectBox.List onClick={i => this.addPart(i)} fluid>
-                        <SelectBox.Item title="ConfigMap" description="Config Map is a configuration map" tags={['configuration']} picture="table"/>
-                        <SelectBox.Item title="Secret" description="For your passwords" tags={['secret']} picture="lock"/>
+                    <SelectBox.List>
+                        <SelectBox.Item title="ConfigMap" description="Config Map is a configuration map" tags={['configuration']} picture="table" onClick={i=> this.addPart({
+                            icon: 'table',
+                            title: 'Config Map',
+                            description: 'A configuration map'
+                         })}/>
+                        <SelectBox.Item title="Secret" description="For your passwords" tags={['secret']} picture="lock" onClick={i=> this.addPart({
+                            icon: 'lock',
+                            title: 'Secret',
+                            description: 'For your passwordsz'
+                         })}/>
                     </SelectBox.List>
                 </Tab.Pane> }
 
@@ -41,9 +65,9 @@ export default class Lane extends Component {
     handleModalOpen = () => this.setState({ modalOpen: true })
     handleModalClose = () => this.setState({ modalOpen: false })
   
-    addPart(i) {
+    addPart = (part) => {
         this.setState(prevState => ({
-            parts: [...prevState.parts, prevState.parts.length]
+            parts: [...prevState.parts, part]
         }));
         this.handleModalClose();
     }
@@ -56,7 +80,7 @@ export default class Lane extends Component {
                     <Container>
                         <Step.Group>
                             {this.state.parts.map((item, index) => {return (
-                                <Part name="{item}" key={index}/>
+                                <Part name="{item}" key={index} icon={item.icon} title={item.title} description={item.description}/>
                             )})}
                         </Step.Group>
                         <Modal closeIcon

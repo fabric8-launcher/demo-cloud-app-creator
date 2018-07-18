@@ -6,7 +6,7 @@ import { Icon, Item as BaseItem, Step as BaseStep } from 'semantic-ui-react'
 
 const Item = (props) => (
     <BaseItem className={"step-item"}>
-      <Icon name={props.icon} size="big"/>
+      <Icon name={props.icon} color={props.iconColor} size="big"/>
       <BaseItem.Content>
         <BaseItem.Header>{props.title}</BaseItem.Header>
         <BaseItem.Meta>{props.description}</BaseItem.Meta>
@@ -25,12 +25,14 @@ const Item = (props) => (
 Item.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  iconColor: PropTypes.string,
   extra: PropTypes.node,
   children: PropTypes.node,
 };
 
 Item.defaultProps = {
   icon: null,
+  iconColor: 'black',
   extra: null,
   children: null,
 };

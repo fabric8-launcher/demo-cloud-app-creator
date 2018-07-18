@@ -10,6 +10,8 @@ import MessageBrokerStep from './steps/MessageBrokerStep';
 import SelectListenerStep from './steps/SelectListenerStep';
 import SelectComponentStep from "./steps/SelectComponentStep";
 import GenerateStep from "./steps/GenerateStep";
+import AppInfoStep from "./steps/AppInfoStep";
+import AppReadyStep from "./steps/AppReadyStep";
 
 const flatMap = (f,xs) =>
     xs.reduce((acc, x) =>
@@ -19,7 +21,8 @@ class MainPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.clearAndAddFirstSteps.bind(this);
+    this.clearAndSetFirstSteps.bind(this);
+    this.clearAndAddSteps.bind(this);
     this.replaceStepWithSteps.bind(this);
     this.addSteps.bind(this);
 
@@ -46,7 +49,10 @@ class MainPage extends React.Component {
           <MessageBrokerStep key={key} id={key} />
       ]},
     ];
-    this.firstStep = (<TemplateStep key={"first"} id={"first"} items={this.templates} action={(item) => !!item && !!item.step && this.clearAndAddFirstSteps(item.step("second"))} />);
+    this.firstStep = (<TemplateStep key={"first"} id={"first"} items={this.templates} action={(item) => !!item && !!item.step && this.clearAndAddSteps(item.step("second"))} />);
+    this.generateStep = (<GenerateStep action={() => this.clearAndSetFirstSteps([this.infoStep])} />);
+    this.infoStep = (<AppInfoStep key={"info"} id={"info"} action={() => this.clearAndSetFirstSteps([this.readyStep])} />);
+    this.readyStep = (<AppReadyStep key={"ready"} id={"ready"} />);
     this.state = {
       steps: [
         this.firstStep,
@@ -54,7 +60,11 @@ class MainPage extends React.Component {
     };
   }
 
-  clearAndAddFirstSteps(steps) {
+  clearAndSetFirstSteps(steps) {
+    this.setState({ steps: [...steps]});
+  }
+
+  clearAndAddSteps(steps) {
     this.setState({ steps: [this.firstStep, ...steps]});
   }
 
@@ -80,7 +90,7 @@ class MainPage extends React.Component {
           </Menu.Item>
         </Menu>
         <Container text>
-          <Step.List nonEmptyStep={<SelectComponentStep key={"scs"} id={"scs"}/>} generateStep={<GenerateStep />}>
+          <Step.List nonEmptyStep={<SelectComponentStep key={"scs"} id={"scs"}/>} generateStep={this.generateStep}>
             {this.state.steps}
           </Step.List>
         </Container>

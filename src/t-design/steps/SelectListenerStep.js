@@ -12,8 +12,6 @@ class SelectListenerStep extends Component {
     this.state = {
       showComponents: false
     };
-    this.onSelect = this.onSelect.bind(this);
-    this.showComponents = this.showComponents.bind(this);
 
     this.items = [
       { id:1, title:"Listener", description:"A plain listener", step: (key) => [
@@ -29,12 +27,12 @@ class SelectListenerStep extends Component {
     ];
   }
 
-  onSelect(item) {
+  onSelect = (item) => {
     this.setState({ showComponents: false });
     this.props.replaceStepWithSteps(this, item.step(this.props.id));
   }
 
-  showComponents() {
+  showComponents = () => {
     this.setState({ showComponents: true });
   }
 

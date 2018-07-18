@@ -9,16 +9,14 @@ class SelectComponentStep extends Component {
     this.state = {
       showComponents: false
     };
-    this.clickOnBox = this.clickOnBox.bind(this);
-    this.showComponents = this.showComponents.bind(this);
   }
 
-  clickOnBox(event) {
+  clickOnBox = (event) => {
     this.setState({ showComponents: false });
     this.props.action(event);
   }
 
-  showComponents() {
+  showComponents = () => {
     this.setState({ showComponents: true });
   }
 

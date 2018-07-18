@@ -21,10 +21,6 @@ class MainPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.clearAndSetFirstSteps.bind(this);
-    this.clearAndAddSteps.bind(this);
-    this.replaceStepWithSteps.bind(this);
-    this.addSteps.bind(this);
 
     this.templates = [
       { id:1, title:"MicroService", description:"A simple MicroService", tags:['backend', 'microservice'], picture:"/images/microservices.png", step: (key) => [
@@ -60,23 +56,23 @@ class MainPage extends React.Component {
     };
   }
 
-  clearAndSetFirstSteps(steps) {
+  clearAndSetFirstSteps = (steps) => {
     this.setState({ steps: [...steps]});
   }
 
-  clearAndAddSteps(steps) {
+  clearAndAddSteps = (steps) => {
     this.setState({ steps: [this.firstStep, ...steps]});
   }
 
-  replaceStepWithSteps(step, steps) {
+  replaceStepWithSteps = (step, steps) => {
       this.setState({ steps: [...flatMap(x => x.props.id===step.props.id ? steps : x, this.state.steps)]});
   }
 
-  addSteps(steps) {
+  addSteps = (steps) => {
     this.setState({ steps: [...this.state.steps, ...steps]});
   }
 
-    render() {
+  render() {
     return (
       <div className="t-design-mainpage">
         <Menu vertical inverted fixed="left">

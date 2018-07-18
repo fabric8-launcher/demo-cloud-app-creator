@@ -7,13 +7,12 @@ class TemplateStep extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onSelect.bind(this);
         this.state = {
             selected: {}
         }
     }
 
-    onSelect(item) {
+    onSelect = (item) => {
         this.setState({ selected: item });
         this.props.action(item);
     }

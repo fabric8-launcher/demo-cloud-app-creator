@@ -79,10 +79,6 @@ export default class Lane extends Component {
         this.handleModalClose();
     }
 
-    handlePartSelected = (e, props) => {
-        console.log(e,props);
-    }
-
     render() {
         return (
             <div className="part">
@@ -91,7 +87,7 @@ export default class Lane extends Component {
                     <Container>
                         <Step.Group>
                             {this.state.parts.map((item, index) => {return (
-                                <Part key={item.id} id={item.id} icon={item.icon} title={item.title} description={item.description} onClick={this.handlePartSelected}/>                            )})}
+                                <Part key={item.id} id={item.id} icon={item.icon} title={item.title} description={item.description} onClick={this.props.onComponentSelected}/>)})}
                         </Step.Group>
                         <Modal closeIcon
                                 open={this.state.modalOpen}

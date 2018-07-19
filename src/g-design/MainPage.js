@@ -8,10 +8,11 @@ export default class MainPage extends Component {
   }
 
   handleStepSelected = (e, step) => {
+    console.log(step);
     this.setState({
-      title: step.props.title,
-      description: step.props.description,
-      propertyPanelVisible: true
+      title: step.title,
+      description: step.description,
+      propertyPanelVisible: step !== null
     })
   }
 

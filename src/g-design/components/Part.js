@@ -5,7 +5,7 @@ export default class Part extends Component {
 
     render() {
         return (
-            <Step link onClick={this.props.onClick} props={this.props}>
+            <Step link onClick={(e) => this.props.onClick(e, this.props)}>
                 <Icon name={this.props.icon} />
                 <Step.Content>
                     <Step.Title>{this.props.title}</Step.Title>

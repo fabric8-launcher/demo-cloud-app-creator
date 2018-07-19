@@ -13,7 +13,7 @@ export default class Part extends Component {
                 </Step.Content>
                 <Step.Content>
                     <div className='ui two buttons'>
-                        <Button icon="caret up" title="Create a Route" />
+                        <Button icon="caret up" title="Create a Route" onClick={this.props.onRouteCreate} />
                     </div>
                 </Step.Content>
             </Step>

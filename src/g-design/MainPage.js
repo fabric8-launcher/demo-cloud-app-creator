@@ -15,6 +15,10 @@ export default class MainPage extends Component {
     })
   }
 
+  handleRouteCreate = (e, step) => {
+    console.log(step);
+  }
+
   render() {
     return (
       <div className="create-page">
@@ -27,7 +31,7 @@ export default class MainPage extends Component {
             <legend>Routes</legend>
             <Container />
           </fieldset>
-          <Lane title="Components" onComponentSelected={this.handleStepSelected} />
+          <Lane title="Components" onComponentSelected={this.handleStepSelected} onRouteCreate={this.handleRouteCreate} />
         </Container>
         <Divider />
         {this.state.propertyPanelVisible && (

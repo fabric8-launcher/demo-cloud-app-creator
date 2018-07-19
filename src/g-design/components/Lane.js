@@ -87,7 +87,8 @@ export default class Lane extends Component {
                     <Container>
                         <Step.Group>
                             {this.state.parts.map((item, index) => {return (
-                                <Part key={item.id} id={item.id} icon={item.icon} title={item.title} description={item.description} onClick={this.props.onComponentSelected}/>)})}
+                                <Part key={item.id} id={item.id} icon={item.icon} title={item.title} description={item.description}
+                                    onClick={this.props.onComponentSelected} onRouteCreate={this.props.onRouteCreate}/>)})}
                         </Step.Group>
                         <Modal closeIcon
                                 open={this.state.modalOpen}

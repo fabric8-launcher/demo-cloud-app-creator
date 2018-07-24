@@ -1,0 +1,14 @@
+.topo-service {
+    width: 200px !important;
+    height: 140px !important;
+    margin: auto !important;
+}
+
+.topo-service.selected {
+    background-color: gainsboro !important;
+}
+
+.topo-service .floatleft {
+    float: left;
+    margin-right: 20px;
+}

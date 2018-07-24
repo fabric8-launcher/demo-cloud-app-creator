@@ -4,6 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
 import TMainPage from './t-design/MainPage';
+import T2MainPage from './t2-design/MainPage';
 import GMainPage from './g-design/MainPage';
 import Home from './pages/Home';
 import BoosterMatrix from './pages/BoosterMatrix';
@@ -30,6 +31,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/t-design' component={TMainPage}/>
+            <Route path='/t2-design' component={T2MainPage}/>
             <Route path='/g-design' component={GMainPage}/>
             <Route path='/matrix' component={BoosterMatrix}/>
           </Switch>

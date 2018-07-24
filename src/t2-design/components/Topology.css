@@ -1,0 +1,20 @@
+.topo {
+    display: flex;
+    height: 500px; /* TEMP please change */
+}
+
+.topo-service-stack {
+    height: 100%;
+    margin: 0px !important;
+}
+
+.topo .topo-service-stack .externals {
+    height: 120px !important;
+}
+
+.topo .topo-service-stack .services {
+}
+
+.topo .topo-service-stack .internals {
+    height: 120px !important;
+}

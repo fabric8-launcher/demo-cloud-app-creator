@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
 
 import { Card, Icon } from 'semantic-ui-react'
 
@@ -19,10 +17,26 @@ const Service = (props) => (
         <Card.Content textAlign="left">
             <Icon name={props.icon} className="floatleft" size="big"/>
             <Card.Header>{props.name}</Card.Header>
-            <Card.Meta>Service / Deployment / Build</Card.Meta>
+            <Card.Meta>{serviceType(props)}</Card.Meta>
         </Card.Content>
     </Card></Item>
 );
+
+const serviceType = (props) => {
+    var type;
+    if (props.hasBuildConfig || (props.services && props.services.length > 0)) {
+        type = [<span key="dc" title="DeploymentConfig">DC</span>];
+        if (props.hasBuildConfig) {
+            type = [...type, " / ", <span key="bc" title="BuildConfig">BC</span>];
+        }
+        if (props.services && props.services.length > 0) {
+            type = ["Services / ", type];
+        }
+    } else {
+        type = "DeploymentConfig"
+    }
+    return type;
+};
 
 Service.propTypes = {
     name: PropTypes.string.isRequired,

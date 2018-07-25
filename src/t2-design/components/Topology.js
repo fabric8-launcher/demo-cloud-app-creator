@@ -50,13 +50,17 @@ class Topology extends React.Component {
     }
 
     onDOMRef = (item, node) => {
-        elementResizeEvent(node, this.onResize)
+        if (node != null) {
+            elementResizeEvent(node, this.onResize);
+        }
     }
 
     onItemDOMRef= (item, node) => {
-        elementResizeEvent(node, this.onResize)
+        if (node != null) {
+            elementResizeEvent(node, this.onResize);
+        }
         this.setState((prevState, props) => {
-            return ({ nodeDOMRefs: { ...prevState.nodeDOMRefs, [item.id]: node } });
+            return ({nodeDOMRefs: {...prevState.nodeDOMRefs, [item.id]: node}});
         });
     }
 
@@ -68,27 +72,57 @@ class Topology extends React.Component {
 
     onSelectItem = (item) => {
         this.setState({ selectedItemId: item.id });
-        this.props.onSelect(this.props.layout.nodes[item.id]);
+        this.props.onSelect(item.id, this.props.layout.nodes[item.id]);
     }
 
-    rowForService = (elems, klass, className, serviceId) => {
-        let columns = this.columnsForService(elems, klass, serviceId);
+    rowForService = (elems, className, serviceId) => {
+        let columns = this.columnsForService(elems, serviceId);
         return (<Grid.Row columns={columns.length} className={className}>
             {columns}
         </Grid.Row>);
     }
 
-    columnsForService = (elems, klass, serviceId) => {
+    columnsForService = (elems, serviceId) => {
         let result = elems
-            .filter(e => e.props.klass === klass && e.props.belongsTo === serviceId)
+            .filter(e => e.props.belongsTo === serviceId)
             .map(e => (<Grid.Column key={e.props.id}>{e}</Grid.Column>));
         return (result.length > 0) ? result : [<Grid.Column key="empty" />];
     }
 
+    determineBelongsToFromEdges = (layout) => {
+        Object.entries(layout.nodes)
+            .filter(([nid, node]) => node.type !== 'service' && !node.belongsTo)
+            .forEach(([nid, node]) => {
+                let connected = Object.entries(layout.edges).filter(([eid, edge]) => edge.from === nid || edge.to === nid);
+                if (connected.length > 0) {
+                    let edge = connected[0][1];
+                    node.belongsTo = (edge.from === nid) ? edge.to : edge.from;
+                }
+            });
+    }
+
+    distributeOrphans = (layout) => {
+        let services = Object.entries(layout.nodes).filter(([nid, node]) => node.type === 'service');
+        let orphans = Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && !node.belongsTo).map(([nid, node]) => node);
+        while (orphans.length > 0) {
+            let orphan = orphans.pop();
+            services.sort(([aid, a], [bid, b]) => this.countServiceBelong(layout, aid) - this.countServiceBelong(layout, bid));
+            orphan.belongsTo = services[0][0];
+        }
+    }
+
+    countServiceBelong = (layout, sid) =>
+        Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && node.belongsTo === sid).length;
+
     render() {
-        let nodeElems = this.createNodeElements(this.props.layout.nodes);
+        var layout = _.cloneDeep(this.props.layout);
+        this.determineBelongsToFromEdges(layout);
+        this.distributeOrphans(layout);
+        let nodeElems = this.createNodeElements(layout.nodes);
         let serviceElems = nodeElems.filter(e => e.props.klass === 'service');
-        let edgeElems = this.createEdgeElements(this.props.layout.edges);
+        let externalElems = nodeElems.filter(e => e.props.klass === 'external');
+        let internalElems = nodeElems.filter(e => e.props.klass === 'internal');
+        let edgeElems = this.createEdgeElements(layout.edges);
         return (
             <DOMRef domRef={this.onDOMRef}>
                 <div className={classNames('topo')}>
@@ -98,12 +132,13 @@ class Topology extends React.Component {
                             className={classNames('topo-service-stack')}
                             textAlign="center"
                             verticalAlign="middle"
+                            stackable={false}
                         >
-                            {this.rowForService(nodeElems, "external", "externals", se.props.id)}
+                            {this.rowForService(externalElems, "externals", se.props.id)}
                             <Grid.Row columns="1" className="services">
                                 <Grid.Column>{se}</Grid.Column>
                             </Grid.Row>
-                            {this.rowForService(nodeElems, "internal", "internals", se.props.id)}
+                            {this.rowForService(internalElems, "internals", se.props.id)}
                         </Grid>);
                     })}
                     <svg className={classNames('topo-svg')}>

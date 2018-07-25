@@ -1,6 +1,7 @@
 .topo {
     display: flex;
-    height: 500px; /* TEMP please change */
+    height: 100%;
+    overflow: auto;
 }
 
 .topo-service-stack {
@@ -16,7 +17,7 @@
 }
 
 .topo .topo-service-stack .internals {
-    height: 120px !important;
+    height: 160px !important;
 }
 
 .topo .topo-svg {

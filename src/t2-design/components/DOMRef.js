@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 
 class DOMRef extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         let node = ReactDOM.findDOMNode(this);
         this.props.domRef(this.props, node);

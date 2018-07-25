@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from "lodash";
 
 import { Icon } from 'semantic-ui-react'
 

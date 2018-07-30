@@ -17,7 +17,7 @@ const empty = {
 
 const step0 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ', suggested: true},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy'], suggested: true},
         cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
     },
     edges: {
@@ -27,63 +27,63 @@ const step0 = {
 
 const step1 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy']},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
-        s2: {type: 'service', name: 'Listener: to Database', suggested: true},
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
-        l2: {from: 's2', to: 'cm1', suggested: true},
+        l2: {from: 's2', to: 's1', suggested: true},
     }
 };
 
 const step2 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy']},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
-        s2: {type: 'service', name: 'Listener: to Database'},
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
-        l2: {from: 's2', to: 'cm1'},
+        l2: {from: 's2', to: 's1'},
     }
 };
 
 const step3 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy']},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
-        s2: {type: 'service', name: 'Listener: to Database'},
-        s3: {type: 'service', name: 'Database: PostgreSQL', suggested: true},
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true},
+        s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy'], suggested: true},
         cm2: {type: 'configmap', name: 'Database Auth', suggested: true},
         v1: {type: 'storage', name: 'Database Storage', suggested: true},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
-        l2: {from: 's2', to: 'cm1'},
+        l2: {from: 's2', to: 's1'},
         l3: {from: 's3', to: 'cm2', suggested: true},
         l4: {from: 's3', to: 'v1', suggested: true},
-        l5: {from: 's2', to: 'cm2', suggested: true},
+        l5: {from: 's2', to: 's3', suggested: true},
     }
 };
 
 const step4 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy']},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
-        s2: {type: 'service', name: 'Listener: to Database'},
-        s3: {type: 'service', name: 'Database: PostgreSQL'},
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true},
+        s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy']},
         cm2: {type: 'configmap', name: 'Database Auth'},
         v1: {type: 'storage', name: 'Database Storage'},
-        s4: {type: 'service', name: 'REST API', suggested:true},
+        s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true, suggested:true},
         r1: {type: 'route', suggested:true},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
-        l2: {from: 's2', to: 'cm1'},
+        l2: {from: 's2', to: 's1'},
         l3: {from: 's3', to: 'cm2'},
         l4: {from: 's3', to: 'v1'},
-        l5: {from: 's2', to: 'cm2'},
+        l5: {from: 's2', to: 's3'},
         l6: {from: 's4', to: 'r1', suggested:true},
         l7: {from: 's4', to: 's3', suggested:true},
     }
@@ -91,21 +91,21 @@ const step4 = {
 
 const step5 = {
     nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy']},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
-        s2: {type: 'service', name: 'Listener: to Database'},
-        s3: {type: 'service', name: 'Database: PostgreSQL'},
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true},
+        s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy']},
         cm2: {type: 'configmap', name: 'Database Auth'},
         v1: {type: 'storage', name: 'Database Storage'},
-        s4: {type: 'service', name: 'REST API'},
+        s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true},
         r1: {type: 'route'},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
-        l2: {from: 's2', to: 'cm1'},
+        l2: {from: 's2', to: 's1'},
         l3: {from: 's3', to: 'cm2'},
         l4: {from: 's3', to: 'v1'},
-        l5: {from: 's2', to: 'cm2'},
+        l5: {from: 's2', to: 's3'},
         l6: {from: 's4', to: 'r1'},
         l7: {from: 's4', to: 's3'},
     }
@@ -171,7 +171,7 @@ class DiagramWithTemplate extends React.Component {
 
     listenerStep = () => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.setState({layout: step2, showSteps: 3})}>
+            <Step>
                 <Step.Content>
                     <Step.Title>Listener</Step.Title>
                     <Step.Description>What kind of listener do you want for your messages?</Step.Description>
@@ -200,6 +200,16 @@ class DiagramWithTemplate extends React.Component {
                                 value='this'
                             />
                         </Form.Field>
+                        <Form.Select label="Runtime" options={[
+                            { key: 'vertx', text: 'Vert.x', value: 'vertx' },
+                            { key: 'sb', text: 'Spring Boot', value: 'springb' },
+                            { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
+                            { key: 'wf', text: 'Wildfly', value: 'wildfly' },
+                        ]} placeholder="Runtime" required />
+                        <Form.Select label="Version" options={[
+                            { key: 'com', text: 'Community', value: 'community' },
+                            { key: 'rh', text: 'Red Hat', value: 'redhat' },
+                        ]} placeholder="Version" required />
                     </Form>
                 </Step.Content>
             </Step>
@@ -255,6 +265,27 @@ class DiagramWithTemplate extends React.Component {
                                 { key: 'psql', text: 'PostgreSQL', value: 'postgresql', image: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg' },
                                 { key: 'mysql', text: 'MySQL', value: 'mysql', image: 'https://www.mysql.com/common/logos/logo-mysql-170x115.png' },
                             ]} placeholder="Database" required />
+                        <Form.Input label="Name" placeholder="Name" required />
+                        <Form.Button label="Schema">Import...</Form.Button>
+                        <Form.Input label="User" placeholder="User" required />
+                        <Form.Input label="Password" type="password" required />
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
+    )
+
+    dbLocalStep = () => (
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Step.Title>Create Local Database</Step.Title>
+                    <Step.Description>What database do you want to use?</Step.Description>
+                    <Form>
+                        <Form.Select label="Type" options={[
+                            { key: 'psql', text: 'PostgresQL', value: 'postgresql' },
+                            { key: 'mysql', text: 'mySQL', value: 'mysql' },
+                        ]} placeholder="Database" required />
                         <Form.Input label="Name" placeholder="Name" required />
                         <Form.Button label="Schema">Import...</Form.Button>
                         <Form.Input label="User" placeholder="User" required />
@@ -383,6 +414,7 @@ class DiagramWithTemplate extends React.Component {
                         { this.state.showSteps == 0 && this.buttonStep(step0, 1, "Start") }
                         { this.state.showSteps >= 1 && this.state.showSteps < 7 && this.amqStep() }
                         { this.state.showSteps >= 2 && this.state.showSteps < 7 && this.listenerStep() }
+                        { this.state.showSteps == 2 && this.buttonStep(step2, 3) }
                         { this.state.showSteps >= 3 && this.state.showSteps < 7 && this.dbStep() }
                         { this.state.showSteps >= 4 && this.state.showSteps < 7 && this.dbCreateStep() }
                         { this.state.showSteps == 4 && this.buttonStep(step4, 5) }

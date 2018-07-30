@@ -21,6 +21,7 @@ class Topology extends React.Component {
         super(props);
         this.state = {
             selectedItemId: null,
+            topoDOMRef: null,
             nodeDOMRefs: {},
         };
     }
@@ -46,13 +47,16 @@ class Topology extends React.Component {
     }
 
     createEdgeElement = (id, edge) => {
-        return (<Line key={id} id={id} {...edge} fromNode={this.state.nodeDOMRefs[edge.from]} toNode={this.state.nodeDOMRefs[edge.to]} />);
+        return (<Line key={id} id={id} {...edge} canvasNode={this.state.topoDOMRef} fromNode={this.state.nodeDOMRefs[edge.from]} toNode={this.state.nodeDOMRefs[edge.to]} />);
     }
 
     onDOMRef = (item, node) => {
         if (node != null) {
             elementResizeEvent(node, this.onResize);
         }
+        this.setState({
+            topoDOMRef: node
+        });
     }
 
     onItemDOMRef= (item, node) => {

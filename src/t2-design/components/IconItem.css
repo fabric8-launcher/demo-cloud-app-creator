@@ -1,2 +1,10 @@
 .topo-item-icon {
 }
+
+.topo-service.suggested {
+    opacity: 0.4;
+}
+
+.topo-service.suggested:hover {
+    opacity: 1.0;
+}

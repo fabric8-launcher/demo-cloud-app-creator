@@ -6,7 +6,7 @@ const Line = (props) => {
         return (
             <path
                 d={pathDimensions(...calculateAnchorPoints(props.canvasNode, props.fromNode, props.toNode))}
-                style={{stroke: 'black', strokeWidth: '3px', fill: 'none' }} />
+                style={{stroke: 'black', strokeWidth: '3px', fill: 'none', strokeOpacity: props.suggested ? 0.4 : 1.0 }} />
         )
     } else {
         return null;
@@ -38,12 +38,14 @@ Line.propTypes = {
     type: PropTypes.string.isRequired,
     selected: PropTypes.bool,
     onSelect: PropTypes.func,
+    suggested: PropTypes.bool,
 };
 
 Line.defaultProps = {
     type: 'line',
     selected: false,
     onSelect: ()=>{},
+    suggested: false,
 };
 
 export default Line;

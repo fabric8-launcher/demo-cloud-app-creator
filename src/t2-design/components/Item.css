@@ -1,0 +1,8 @@
+.topo-item.suggested {
+    opacity: 0.4;
+}
+
+.topo-item.suggested:hover {
+    opacity: 1.0;
+}
+

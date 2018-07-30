@@ -11,7 +11,7 @@ import './IconItem.css';
 const IconItem = (props) => (
     <Item {...props}><Icon
         name={props.icon}
-        className={classNames('topo-item', 'topo-item-icon', 'selectable', {'selected': props.selected})}
+        className={classNames('topo-item', 'topo-item-icon', 'selectable', {'selected': props.selected, 'suggested': props.suggested})}
         bordered={props.selected}
         size="huge"
         onClick={() => props.onSelect(props)}

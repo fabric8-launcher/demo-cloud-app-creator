@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import DOMRef from './DOMRef'
 
+import './Item.css';
+
 const Item = (props) => (
     <DOMRef domRef={(bp, node) => props.domRef(props, node)}>{props.children}</DOMRef>
 );

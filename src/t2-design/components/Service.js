@@ -10,7 +10,7 @@ import './Service.css';
 
 const Service = (props) => (
     <Item {...props}><Card
-        className={classNames('topo-item', 'topo-service', 'selectable', {'selected': props.selected})}
+        className={classNames('topo-item', 'topo-service', 'selectable', {'selected': props.selected, 'suggested': props.suggested})}
         color={props.selected ? 'red' : 'grey'}
         onClick={() => props.onSelect(props)}
     >

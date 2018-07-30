@@ -14,6 +14,8 @@ const Home = () => (
       <Button primary size='huge' as="a" href="/t-design">Start with T<Icon name='right arrow' /></Button>
       <Divider horizontal>Or</Divider>
       <Button primary size='huge' as="a" href="/t2-design">Start with T2<Icon name='right arrow' /></Button>
+        <Divider horizontal>Or</Divider>
+        <Button primary size='huge' as="a" href="/t3-design">Start with T3<Icon name='right arrow' /></Button>
       <Divider horizontal>Or</Divider>
       <Button primary size='huge' as="a" href="/g-design">Start with G<Icon name='right arrow' /></Button>
     </Container>

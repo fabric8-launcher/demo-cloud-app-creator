@@ -280,26 +280,20 @@ class DiagramWithTemplate extends React.Component {
     render() {
         return (
             <div className={classNames("t3-design-withsteps")}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td className={classNames("stepscell")}>
-                                <Step.Group fluid vertical>
-                                    { this.startStep() }
-                                    { this.amqStep() }
-                                    { this.listenerStep() }
-                                    { this.dbStep() }
-                                    { this.dbCreateStep() }
-                                    { this.restStep() }
-                                    { this.generateStep() }
-                                </Step.Group>
-                            </td>
-                            <td className={classNames("topocell")}>
-                                <Topology layout={this.state.layout} onSelect={this.onSelectItem}/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className={classNames("left-panel")}>
+                    <Step.Group fluid vertical>
+                        { this.startStep() }
+                        { this.amqStep() }
+                        { this.listenerStep() }
+                        { this.dbStep() }
+                        { this.dbCreateStep() }
+                        { this.restStep() }
+                        { this.generateStep() }
+                    </Step.Group>
+                </div>
+                <div className={classNames("main-panel")}>
+                    <Topology layout={this.state.layout} onSelect={this.onSelectItem}/>
+                </div>
             </div>
         );
     }

@@ -1,12 +1,12 @@
-import React from 'react';
 import classNames from 'classnames';
-
-import {Checkbox, Form, Grid, List, Segment, Step} from 'semantic-ui-react'
-
-import Topology from "./components/Topology";
+import React from 'react';
+import { Checkbox, Dropdown, Form, Grid, List, Segment, Step } from 'semantic-ui-react';
 import DOMRef from "./components/DOMRef";
-
+import Topology from "./components/Topology";
 import './DiagramWithSteps.css';
+
+
+
 
 const empty = {
     nodes: {
@@ -250,10 +250,11 @@ class DiagramWithTemplate extends React.Component {
                     <Step.Title>Create Local Database</Step.Title>
                     <Step.Description>What database do you want to use?</Step.Description>
                     <Form>
-                        <Form.Select label="Type" options={[
-                            { key: 'psql', text: 'PostgresQL', value: 'postgresql' },
-                            { key: 'mysql', text: 'mySQL', value: 'mysql' },
-                        ]} placeholder="Database" required />
+                        <Dropdown placeholder='Database' label="Type" fluid selection
+                            options={[
+                                { key: 'psql', text: 'PostgreSQL', value: 'postgresql', image: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg' },
+                                { key: 'mysql', text: 'MySQL', value: 'mysql', image: 'https://www.mysql.com/common/logos/logo-mysql-170x115.png' },
+                            ]} placeholder="Database" required />
                         <Form.Input label="Name" placeholder="Name" required />
                         <Form.Button label="Schema">Import...</Form.Button>
                         <Form.Input label="User" placeholder="User" required />

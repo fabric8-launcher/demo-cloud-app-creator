@@ -1,14 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-import _ from "lodash";
 
-import {Checkbox, Form, Step} from 'semantic-ui-react'
+import {Checkbox, Form, Grid, List, Segment, Step} from 'semantic-ui-react'
 
 import Topology from "./components/Topology";
+import DOMRef from "./components/DOMRef";
 
 import './DiagramWithSteps.css';
 
-const step1 = {
+const empty = {
+    nodes: {
+    },
+    edges: {
+    }
+};
+
+const step0 = {
     nodes: {
         s1: {type: 'service', name: 'Message Broker: AMQ', suggested: true},
         cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
@@ -18,7 +25,7 @@ const step1 = {
     }
 };
 
-const step2 = {
+const step1 = {
     nodes: {
         s1: {type: 'service', name: 'Message Broker: AMQ'},
         cm1: {type: 'configmap', name: 'Message Broker Auth'},
@@ -27,6 +34,18 @@ const step2 = {
     edges: {
         l1: {from: 's1', to: 'cm1'},
         l2: {from: 's2', to: 'cm1', suggested: true},
+    }
+};
+
+const step2 = {
+    nodes: {
+        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        cm1: {type: 'configmap', name: 'Message Broker Auth'},
+        s2: {type: 'service', name: 'Listener: to Database'},
+    },
+    edges: {
+        l1: {from: 's1', to: 'cm1'},
+        l2: {from: 's2', to: 'cm1'},
     }
 };
 
@@ -98,179 +117,256 @@ class DiagramWithTemplate extends React.Component {
         super(props);
         this.state = {
             selectedItemId: null,
+            showSteps: 0,
             layout: {
                 nodes: {
-                    r1: {type: 'route', belongsTo: 's1'},
-                    s1: {type: 'service', name: 'Placeholder'},
-                    d1: {type: 'storage', belongsTo: 's1'},
                 },
                 edges: {
-                    l1: {from: 'r1', to: 's1'},
-                    l2: {from: 's1', to: 'd1'},
                 }
             }
         };
     }
 
+    scrollIntoView = (props, node) => node && node.scrollIntoView();
+
     startStep = () => (
-        <Step onClick={() => this.setState({layout: step1})}>
-            <Step.Content>
-                <Step.Title>A Messaging App</Step.Title>
-                <Step.Description>Let's create a messaging application</Step.Description>
-                <Step.Description><a>Click here to Start</a></Step.Description>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Step.Title>A Messaging App</Step.Title>
+                    <Step.Description>Let's create a messaging application</Step.Description>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     amqStep = () => (
-        <Step onClick={() => this.setState({layout: step1})}>
-            <Step.Content>
-                <Step.Title>Message Broker: AMQ</Step.Title>
-                <Step.Description>A message broker based on Red Hat AMQ.</Step.Description>
-                <Form>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Queue (one listener)'
-                            name='queue'
-                            value='this'
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Topic (many listeners)'
-                            name='topic'
-                            value='this'
-                        />
-                    </Form.Field>
-                </Form>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step onClick={() => this.setState({layout: step1, showSteps: 2})}>
+                <Step.Content>
+                    <Step.Title>Message Broker: AMQ</Step.Title>
+                    <Step.Description>A message broker based on Red Hat AMQ.</Step.Description>
+                    <Form>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Queue (one listener)'
+                                name='queue'
+                                value='this'
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Topic (many listeners)'
+                                name='topic'
+                                value='this'
+                            />
+                        </Form.Field>
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     listenerStep = () => (
-        <Step onClick={() => this.setState({layout: step2})}>
-            <Step.Content>
-                <Step.Title>Listener</Step.Title>
-                <Step.Description>What kind of listener do you want for your messages?</Step.Description>
-                <Form>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Write messages to log'
-                            name='simple'
-                            value='this'
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Write messages to database'
-                            name='database'
-                            value='this'
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Some other message sinkn'
-                            name='other'
-                            value='this'
-                        />
-                    </Form.Field>
-                </Form>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step onClick={() => this.setState({layout: step2, showSteps: 3})}>
+                <Step.Content>
+                    <Step.Title>Listener</Step.Title>
+                    <Step.Description>What kind of listener do you want for your messages?</Step.Description>
+                    <Form>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Write messages to log'
+                                name='simple'
+                                value='this'
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Write messages to database'
+                                name='database'
+                                value='this'
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Some other message sink'
+                                name='other'
+                                value='this'
+                            />
+                        </Form.Field>
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     dbStep = () => (
-        <Step>
-            <Step.Content>
-                <Step.Title>Database</Step.Title>
-                <Step.Description>What database do you want to use?</Step.Description>
-                <Form>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Create local database'
-                            name='create'
-                            value='this'
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Connect to local database'
-                            name='local'
-                            value='this'
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Connect to external database'
-                            name='other'
-                            value='this'
-                        />
-                    </Form.Field>
-                </Form>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step onClick={() => this.setState({layout: step3, showSteps: 4})}>
+                <Step.Content>
+                    <Step.Title>Database</Step.Title>
+                    <Step.Description>What database do you want to use?</Step.Description>
+                    <Form>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Create local database'
+                                name='create'
+                                value='this'
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Connect to local database'
+                                name='local'
+                                value='this'
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Checkbox
+                                radio
+                                label='Connect to external database'
+                                name='other'
+                                value='this'
+                            />
+                        </Form.Field>
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     dbCreateStep = () => (
-        <Step onClick={() => this.setState({layout: step3})}>
-            <Step.Content>
-                <Step.Title>Database</Step.Title>
-                <Step.Description>What database do you want to use?</Step.Description>
-                <Form>
-                    <Form.Select label="Type" options={[
-                        { key: 'psql', text: 'PostgresQL', value: 'postgresql' },
-                        { key: 'mysql', text: 'mySQL', value: 'mysql' },
-                    ]} placeholder="Database" required />
-                    <Form.Input label="Name" placeholder="Name" required />
-                    <Form.Button label="Schema">Import...</Form.Button>
-                    <Form.Input label="User" placeholder="User" required />
-                    <Form.Input label="Password" type="password" required />
-                </Form>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Step.Title>Create Local Database</Step.Title>
+                    <Step.Description>What database do you want to use?</Step.Description>
+                    <Form>
+                        <Form.Select label="Type" options={[
+                            { key: 'psql', text: 'PostgresQL', value: 'postgresql' },
+                            { key: 'mysql', text: 'mySQL', value: 'mysql' },
+                        ]} placeholder="Database" required />
+                        <Form.Input label="Name" placeholder="Name" required />
+                        <Form.Button label="Schema">Import...</Form.Button>
+                        <Form.Input label="User" placeholder="User" required />
+                        <Form.Input label="Password" type="password" required />
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     restStep = () => (
-        <Step onClick={() => this.setState({layout: step4})}>
-            <Step.Content>
-                <Step.Title>REST API</Step.Title>
-                <Step.Description>Let's create a REST API to access the messages stored in the database</Step.Description>
-                <Form>
-                    <Form.Select label="Runtime" options={[
-                        { key: 'vertx', text: 'Vert.x', value: 'vertx' },
-                        { key: 'sb', text: 'Spring Boot', value: 'springb' },
-                        { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
-                        { key: 'wf', text: 'Wildfly', value: 'wildfly' },
-                    ]} placeholder="Runtime" required />
-                    <Form.Select label="Version" options={[
-                        { key: 'com', text: 'Community', value: 'community' },
-                        { key: 'rh', text: 'Red Hat', value: 'redhat' },
-                    ]} placeholder="Version" required />
-                </Form>
-            </Step.Content>
-        </Step>
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Step.Title>REST API</Step.Title>
+                    <Step.Description>Let's create a REST API to access the messages stored in the database</Step.Description>
+                    <Form>
+                        <Form.Select label="Runtime" options={[
+                            { key: 'vertx', text: 'Vert.x', value: 'vertx' },
+                            { key: 'sb', text: 'Spring Boot', value: 'springb' },
+                            { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
+                            { key: 'wf', text: 'Wildfly', value: 'wildfly' },
+                        ]} placeholder="Runtime" required />
+                        <Form.Select label="Version" options={[
+                            { key: 'com', text: 'Community', value: 'community' },
+                            { key: 'rh', text: 'Red Hat', value: 'redhat' },
+                        ]} placeholder="Version" required />
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
-    generateStep = () => (
-        <Step onClick={() => this.setState({layout: step5})}>
-            <Step.Content>
-                <Step.Title>Database</Step.Title>
-                <Step.Description>What database do you want to use?</Step.Description>
-                <Form>
-                    <Form.Field>
-                        <Form.Button>Generate</Form.Button>
-                    </Form.Field>
-                </Form>
-            </Step.Content>
-        </Step>
+    infoStep = () => (
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Grid columns={1}>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <h2>While you wait</h2>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <a>Take a look at your build</a><br/>
+                                <i>This will take a couple of minutes</i>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <h2>Your next step</h2>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                Next Steps: Update your booster using Continuous Delivery<br/>
+                                Your booster is automatically configured to build and deploy with new commits.
+                                <List ordered>
+                                    <List.Item>Clone your project from GitHub.
+                                        <Segment secondary>$ git clone https://github.com/someuser/my-app</Segment>
+                                    </List.Item>
+                                    <List.Item>Open your project in your desired IDE or editor.</List.Item>
+                                    <List.Item>Perform any updates you want to the project.</List.Item>
+                                    <List.Item>Commit and push your changes back to GitHub.
+                                        <Segment secondary>$ git add .<br/>
+                                            $ git commit -m "Made an update"<br/>
+                                            $ git push</Segment>
+                                    </List.Item>
+                                </List>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <a onClick={() => this.setState({layout: empty, showSteps: 0})}>Create new application</a>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Step.Content>
+            </Step>
+        </DOMRef>
+    )
+
+    buttonStep = (layout, nextStep, title="OK") => (
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step onClick={() => this.setState({layout: layout, showSteps: nextStep})}>
+                <Step.Content>
+                    <Form>
+                        <Form.Field>
+                            <Form.Button>{title}</Form.Button>
+                        </Form.Field>
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
+    )
+
+    generateButtonStep = () => (
+        <DOMRef domRef={this.scrollIntoView}>
+            <Step>
+                <Step.Content>
+                    <Step.Title>Generate Application</Step.Title>
+                    <Step.Description>You are now ready to generate your application</Step.Description>
+                    <Form>
+                        <Form.Input label="Application Name" placeholder="Name" value="my-app" required />
+                        <Form.Input label="Maven Artifact" value="booster" required />
+                        <Form.Input label="Maven Version" value="1.0.0-SNAPSHOT" required />
+                        <Form.Input label="Maven Group ID" value="io.openshift" required />
+                        <Form.Button primary icon="cloud upload" labelPosition="right" content="Deploy" onClick={() => this.setState({showSteps: 7})} />
+                    </Form>
+                </Step.Content>
+            </Step>
+        </DOMRef>
     )
 
     onSelectItem = (id, item) => {
@@ -282,13 +378,17 @@ class DiagramWithTemplate extends React.Component {
             <div className={classNames("t3-design-withsteps")}>
                 <div className={classNames("left-panel")}>
                     <Step.Group fluid vertical>
-                        { this.startStep() }
-                        { this.amqStep() }
-                        { this.listenerStep() }
-                        { this.dbStep() }
-                        { this.dbCreateStep() }
-                        { this.restStep() }
-                        { this.generateStep() }
+                        { this.state.showSteps < 7 && this.startStep() }
+                        { this.state.showSteps == 0 && this.buttonStep(step0, 1, "Start") }
+                        { this.state.showSteps >= 1 && this.state.showSteps < 7 && this.amqStep() }
+                        { this.state.showSteps >= 2 && this.state.showSteps < 7 && this.listenerStep() }
+                        { this.state.showSteps >= 3 && this.state.showSteps < 7 && this.dbStep() }
+                        { this.state.showSteps >= 4 && this.state.showSteps < 7 && this.dbCreateStep() }
+                        { this.state.showSteps == 4 && this.buttonStep(step4, 5) }
+                        { this.state.showSteps >= 5 && this.state.showSteps < 7 && this.restStep() }
+                        { this.state.showSteps == 5 && this.buttonStep(step5, 6) }
+                        { this.state.showSteps >= 6 && this.state.showSteps < 7 && this.generateButtonStep() }
+                        { this.state.showSteps >= 7 && this.infoStep() }
                     </Step.Group>
                 </div>
                 <div className={classNames("main-panel")}>

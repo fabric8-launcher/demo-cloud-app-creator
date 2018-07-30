@@ -56,6 +56,8 @@ const step4 = {
         s3: {type: 'service', name: 'Database: PostgreSQL'},
         cm2: {type: 'configmap', name: 'Database Auth'},
         v1: {type: 'storage', name: 'Database Storage'},
+        s4: {type: 'service', name: 'REST API', suggested:true},
+        r1: {type: 'route', suggested:true},
     },
     edges: {
         l1: {from: 's1', to: 'cm1'},
@@ -63,6 +65,30 @@ const step4 = {
         l3: {from: 's3', to: 'cm2'},
         l4: {from: 's3', to: 'v1'},
         l5: {from: 's2', to: 'cm2'},
+        l6: {from: 's4', to: 'r1', suggested:true},
+        l7: {from: 's4', to: 's3', suggested:true},
+    }
+};
+
+const step5 = {
+    nodes: {
+        s1: {type: 'service', name: 'Message Broker: AMQ'},
+        cm1: {type: 'configmap', name: 'Message Broker Auth'},
+        s2: {type: 'service', name: 'Listener: to Database'},
+        s3: {type: 'service', name: 'Database: PostgreSQL'},
+        cm2: {type: 'configmap', name: 'Database Auth'},
+        v1: {type: 'storage', name: 'Database Storage'},
+        s4: {type: 'service', name: 'REST API'},
+        r1: {type: 'route'},
+    },
+    edges: {
+        l1: {from: 's1', to: 'cm1'},
+        l2: {from: 's2', to: 'cm1'},
+        l3: {from: 's3', to: 'cm2'},
+        l4: {from: 's3', to: 'v1'},
+        l5: {from: 's2', to: 'cm2'},
+        l6: {from: 's4', to: 'r1'},
+        l7: {from: 's4', to: 's3'},
     }
 };
 
@@ -212,8 +238,29 @@ class DiagramWithTemplate extends React.Component {
         </Step>
     )
 
-    generateStep = () => (
+    restStep = () => (
         <Step onClick={() => this.setState({layout: step4})}>
+            <Step.Content>
+                <Step.Title>REST API</Step.Title>
+                <Step.Description>Let's create a REST API to access the messages stored in the database</Step.Description>
+                <Form>
+                    <Form.Select label="Runtime" options={[
+                        { key: 'vertx', text: 'Vert.x', value: 'vertx' },
+                        { key: 'sb', text: 'Spring Boot', value: 'springb' },
+                        { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
+                        { key: 'wf', text: 'Wildfly', value: 'wildfly' },
+                    ]} placeholder="Runtime" required />
+                    <Form.Select label="Version" options={[
+                        { key: 'com', text: 'Community', value: 'community' },
+                        { key: 'rh', text: 'Red Hat', value: 'redhat' },
+                    ]} placeholder="Version" required />
+                </Form>
+            </Step.Content>
+        </Step>
+    )
+
+    generateStep = () => (
+        <Step onClick={() => this.setState({layout: step5})}>
             <Step.Content>
                 <Step.Title>Database</Step.Title>
                 <Step.Description>What database do you want to use?</Step.Description>
@@ -243,6 +290,7 @@ class DiagramWithTemplate extends React.Component {
                                     { this.listenerStep() }
                                     { this.dbStep() }
                                     { this.dbCreateStep() }
+                                    { this.restStep() }
                                     { this.generateStep() }
                                 </Step.Group>
                             </td>

@@ -11,6 +11,8 @@ import ConfigMap from "./ConfigMap";
 import Route from "./Route";
 import Service from './Service';
 import Storage from "./Storage";
+import ExternalDB from "./ExternalDB";
+import Binding from "./Binding";
 import Line from "./Line";
 
 import './Topology.css';
@@ -37,6 +39,8 @@ class Topology extends React.Component {
             case 'route': Node = Route; break;
             case 'service': Node = Service; break;
             case 'storage': Node = Storage; break;
+            case 'extdb': Node = ExternalDB; break;
+            case 'binding': Node = Binding; break;
             default: return null;
         }
         return (<Node key={id} id={id} {...node} domRef={this.onItemDOMRef} onSelect={this.onSelectItem} selected={this.state.selectedItemId===id} />);

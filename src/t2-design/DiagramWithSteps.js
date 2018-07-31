@@ -80,7 +80,7 @@ class DiagramWithTemplate extends React.Component {
     }
 
     buttonStep = (layout, nextStep, title="OK") => (
-        <DOMRef domRef={this.scrollIntoView}>
+        <DOMRef key="button" domRef={this.scrollIntoView}>
             <Step onClick={() => this.pushStep(layout, nextStep)}>
                 <Step.Content>
                     <Form>
@@ -96,7 +96,7 @@ class DiagramWithTemplate extends React.Component {
     startStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="start" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>A Messaging App</Step.Title>
@@ -127,7 +127,7 @@ class DiagramWithTemplate extends React.Component {
             }
         };
         return (
-            <DOMRef domRef={this.scrollIntoView}>
+            <DOMRef key="amq" domRef={this.scrollIntoView}>
                 <Step>
                     <Step.Content>
                         <Step.Title>Message Broker</Step.Title>
@@ -142,7 +142,7 @@ class DiagramWithTemplate extends React.Component {
                                     onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep)}
                                     checked={this.state.forms.broker === 'create'}
                                     onChange={this.fieldHandler}
-                                    disabled={this.state.forms.broker}
+                                    disabled={!!this.state.forms.broker}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -154,7 +154,7 @@ class DiagramWithTemplate extends React.Component {
                                     onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep)}
                                     checked={this.state.forms.broker === 'local'}
                                     onChange={this.fieldHandler}
-                                    disabled={this.state.forms.broker}
+                                    disabled={!!this.state.forms.broker}
                                 />
                             </Form.Field>
                         </Form>
@@ -165,7 +165,7 @@ class DiagramWithTemplate extends React.Component {
     }
 
     amqCreateStep = (props) => (
-        <DOMRef domRef={this.scrollIntoView}>
+        <DOMRef key="amqCreate" domRef={this.scrollIntoView}>
             <Step>
                 <Step.Content>
                     <Step.Title>Message Broker: AMQ</Step.Title>
@@ -180,7 +180,7 @@ class DiagramWithTemplate extends React.Component {
                                 checked={this.state.forms.amq === 'queue'}
                                 onChange={this.fieldHandler}
                                 onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={this.state.forms.amq}
+                                disabled={!!this.state.forms.amq}
                             />
                         </Form.Field>
                         <Form.Field>
@@ -192,7 +192,7 @@ class DiagramWithTemplate extends React.Component {
                                 checked={this.state.forms.amq === 'topic'}
                                 onChange={this.fieldHandler}
                                 onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={this.state.forms.amq}
+                                disabled={!!this.state.forms.amq}
                             />
                         </Form.Field>
                     </Form>
@@ -204,7 +204,7 @@ class DiagramWithTemplate extends React.Component {
     amqExistingStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="amqExists" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Connect To Existing Message Broker</Step.Title>
@@ -242,7 +242,7 @@ class DiagramWithTemplate extends React.Component {
     listenerStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="listener" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Listener</Step.Title>
@@ -256,7 +256,7 @@ class DiagramWithTemplate extends React.Component {
                                         value='simple'
                                         checked={this.state.forms.listener === 'simple'}
                                         onChange={this.fieldHandler}
-                                        disabled={this.state.forms.listener}
+                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -267,7 +267,7 @@ class DiagramWithTemplate extends React.Component {
                                         value='database'
                                         checked={this.state.forms.listener === 'database'}
                                         onChange={this.fieldHandler}
-                                        disabled={this.state.forms.listener}
+                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -278,7 +278,7 @@ class DiagramWithTemplate extends React.Component {
                                         value='other'
                                         checked={this.state.forms.listener === 'other'}
                                         onChange={this.fieldHandler}
-                                        disabled={this.state.forms.listener}
+                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Select label="Runtime" options={[
@@ -322,7 +322,7 @@ class DiagramWithTemplate extends React.Component {
             }
         };
         return (
-            <DOMRef domRef={this.scrollIntoView}>
+            <DOMRef key="db" domRef={this.scrollIntoView}>
                 <Step>
                     <Step.Content>
                         <Step.Title>Database</Step.Title>
@@ -337,7 +337,7 @@ class DiagramWithTemplate extends React.Component {
                                     onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep)}
                                     checked={this.state.forms.database === 'create'}
                                     onChange={this.fieldHandler}
-                                    disabled={this.state.forms.database}
+                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -349,7 +349,7 @@ class DiagramWithTemplate extends React.Component {
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep)}
                                     checked={this.state.forms.database === 'local'}
                                     onChange={this.fieldHandler}
-                                    disabled={this.state.forms.database}
+                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -361,7 +361,7 @@ class DiagramWithTemplate extends React.Component {
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep)}
                                     checked={this.state.forms.database === 'other'}
                                     onChange={this.fieldHandler}
-                                    disabled={this.state.forms.database}
+                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                         </Form>
@@ -374,7 +374,7 @@ class DiagramWithTemplate extends React.Component {
     dbCreateStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="dbCreate" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Create Local Database</Step.Title>
@@ -408,7 +408,7 @@ class DiagramWithTemplate extends React.Component {
     dbLocalStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="dbLocal" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Connect To Existing Database</Step.Title>
@@ -447,7 +447,7 @@ class DiagramWithTemplate extends React.Component {
     dbExternalStep = (props) => {
         return [
             (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="dbExternal" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Connect To External Database</Step.Title>
@@ -475,7 +475,7 @@ class DiagramWithTemplate extends React.Component {
     restStep = (props) => {
         return [
                 (
-                <DOMRef domRef={this.scrollIntoView}>
+                <DOMRef key="rest" domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>REST API</Step.Title>
@@ -501,7 +501,7 @@ class DiagramWithTemplate extends React.Component {
     }
 
     generateButtonStep = (props) => (
-        <DOMRef domRef={this.scrollIntoView}>
+        <DOMRef key="generate" domRef={this.scrollIntoView}>
             <Step>
                 <Step.Content>
                     <Step.Title>Generate Application</Step.Title>
@@ -519,7 +519,7 @@ class DiagramWithTemplate extends React.Component {
     )
 
     infoStep = (props) => (
-        <DOMRef domRef={this.scrollIntoView}>
+        <DOMRef key="info" domRef={this.scrollIntoView}>
             <Step>
                 <Step.Content>
                     <Grid columns={1}>
@@ -559,7 +559,7 @@ class DiagramWithTemplate extends React.Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                                <a onClick={() => this.setState({layout: empty, history: [], steps: [ this.startStep ]})}>Create new application</a>
+                                <a onClick={() => this.setState({layout: empty, history: [], steps: [ this.startStep ], forms: {}})}>Create new application</a>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -573,12 +573,11 @@ class DiagramWithTemplate extends React.Component {
     }
 
     render() {
-        let showSteps = this.state.history.length;
         return (
             <div className={classNames("t3-design-withsteps")}>
                 <div className={classNames("left-panel")}>
                     <Step.Group fluid vertical>
-                        { this.state.steps.map((f, i, a) => f({ isLast: i == (a.length - 1) })) }
+                        { this.state.steps.map((f, i, a) => f({ isLast: i === (a.length - 1) })) }
                     </Step.Group>
                 </div>
                 <div className={classNames("main-panel")}>

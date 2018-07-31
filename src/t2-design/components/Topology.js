@@ -133,7 +133,7 @@ class Topology extends React.Component {
         let nodeElems = this.createNodeElements(layout.nodes);
         let dummyServiceElem = { props: { id: '__dummy__' }};
         var serviceElems = nodeElems.filter(e => e.props.klass === 'service');
-        if (serviceElems.length == 0) {
+        if (serviceElems.length === 0) {
             serviceElems = [ dummyServiceElem ];
         }
         let externalElems = nodeElems.filter(e => e.props.klass === 'external');

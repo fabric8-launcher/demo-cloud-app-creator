@@ -44,20 +44,16 @@ class DiagramWithTemplate extends React.Component {
             selectedItemId: null,
             layout: empty,
             steps: [ this.startStep ],
+            forms: {},
             history: [],
-            listener: null,
-            amq: null,
-            database: null,
-            broker: null,
         };
     }
 
-    fieldHandler(name) {
-        return (e, { value }) => {
-            const change = {};
-          change[name] = value;
-            this.setState(change);
-        };
+    fieldHandler = (e, { name, value }) => {
+        this.setState((prevState, props) => {
+            let newForms = { ...prevState.forms, [name]: value };
+            return { forms: newForms };
+        });
     }
 
     scrollIntoView = (props, node) => node && node.scrollIntoView();
@@ -69,12 +65,15 @@ class DiagramWithTemplate extends React.Component {
 
     pushStep = (layout, nextStep, append=true) => {
         this.setState((prevState, props) => {
-            let newHistory = [ ...prevState.history, { layout: _.cloneDeep(prevState.layout), steps: _.cloneDeep(prevState.steps ) } ];
+            let newHistory = [ ...prevState.history, {
+                layout: _.cloneDeep(prevState.layout),
+                steps: _.cloneDeep(prevState.steps ),
+                forms: _.cloneDeep(prevState.forms ),
+            } ];
             let newLayout = {
                 nodes: { ...this.unsuggest(prevState.layout.nodes), ...layout.nodes },
                 edges: { ...this.unsuggest(prevState.layout.edges), ...layout.edges },
             };
-            console.log(newLayout);
             let newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
             return { layout: newLayout, steps: newSteps, history: newHistory };
         });
@@ -138,24 +137,24 @@ class DiagramWithTemplate extends React.Component {
                                 <Checkbox
                                     radio
                                     label='Create local message broker'
-                                    name='create'
+                                    name='broker'
                                     value='create'
                                     onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep)}
-                                    checked={this.state.broker === 'create'}
-                                    onChange={this.fieldHandler('broker')}
-                                    disabled={this.state.broker}
+                                    checked={this.state.forms.broker === 'create'}
+                                    onChange={this.fieldHandler}
+                                    disabled={this.state.forms.broker}
                                 />
                             </Form.Field>
                             <Form.Field>
                                 <Checkbox
                                     radio
                                     label='Connect to existing message broker'
-                                    name='local'
+                                    name='broker'
                                     value='local'
                                     onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep)}
-                                    checked={this.state.broker === 'local'}
-                                    onChange={this.fieldHandler('broker')}
-                                    disabled={this.state.broker}
+                                    checked={this.state.forms.broker === 'local'}
+                                    onChange={this.fieldHandler}
+                                    disabled={this.state.forms.broker}
                                 />
                             </Form.Field>
                         </Form>
@@ -176,24 +175,24 @@ class DiagramWithTemplate extends React.Component {
                             <Checkbox
                                 radio
                                 label='Queue (one listener)'
-                                name='queue'
+                                name='amq'
                                 value='queue'
-                                checked={this.state.amq === 'queue'}
-                                onChange={this.fieldHandler('amq')}
+                                checked={this.state.forms.amq === 'queue'}
+                                onChange={this.fieldHandler}
                                 onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={this.state.amq}
+                                disabled={this.state.forms.amq}
                             />
                         </Form.Field>
                         <Form.Field>
                             <Checkbox
                                 radio
                                 label='Topic (many listeners)'
-                                name='topic'
+                                name='amq'
                                 value='topic'
-                                checked={this.state.amq === 'topic'}
-                                onChange={this.fieldHandler('amq')}
+                                checked={this.state.forms.amq === 'topic'}
+                                onChange={this.fieldHandler}
                                 onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={this.state.amq}
+                                disabled={this.state.forms.amq}
                             />
                         </Form.Field>
                     </Form>
@@ -253,33 +252,33 @@ class DiagramWithTemplate extends React.Component {
                                     <Checkbox
                                         radio
                                         label='Write messages to log'
-                                        name='simple'
+                                        name='listener'
                                         value='simple'
-                                        checked={this.state.listener === 'simple'}
-                                        onChange={this.fieldHandler('listener')}
-                                        disabled={this.state.listener}
+                                        checked={this.state.forms.listener === 'simple'}
+                                        onChange={this.fieldHandler}
+                                        disabled={this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <Checkbox
                                         radio
                                         label='Write messages to database'
-                                        name='database'
+                                        name='listener'
                                         value='database'
-                                        checked={this.state.listener === 'database'}
-                                        onChange={this.fieldHandler('listener')}
-                                        disabled={this.state.listener}
+                                        checked={this.state.forms.listener === 'database'}
+                                        onChange={this.fieldHandler}
+                                        disabled={this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <Checkbox
                                         radio
                                         label='Some other message sink'
-                                        name='other'
+                                        name='listener'
                                         value='other'
-                                        checked={this.state.listener === 'other'}
-                                        onChange={this.fieldHandler('listener')}
-                                        disabled={this.state.listener}
+                                        checked={this.state.forms.listener === 'other'}
+                                        onChange={this.fieldHandler}
+                                        disabled={this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Select label="Runtime" options={[
@@ -333,36 +332,36 @@ class DiagramWithTemplate extends React.Component {
                                 <Checkbox
                                     radio
                                     label='Create local database'
-                                    name='create'
+                                    name='database'
                                     value='create'
                                     onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep)}
-                                    checked={this.state.database === 'create'}
-                                    onChange={this.fieldHandler('database')}
-                                    disabled={this.state.database}
+                                    checked={this.state.forms.database === 'create'}
+                                    onChange={this.fieldHandler}
+                                    disabled={this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
                                 <Checkbox
                                     radio
                                     label='Connect to local database'
-                                    name='local'
+                                    name='database'
                                     value='local'
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep)}
-                                    checked={this.state.database === 'local'}
-                                    onChange={this.fieldHandler('database')}
-                                    disabled={this.state.database}
+                                    checked={this.state.forms.database === 'local'}
+                                    onChange={this.fieldHandler}
+                                    disabled={this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
                                 <Checkbox
                                     radio
                                     label='Connect to external database'
-                                    name='other'
+                                    name='database'
                                     value='other'
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep)}
-                                    checked={this.state.database === 'other'}
-                                    onChange={this.fieldHandler('database')}
-                                    disabled={this.state.database}
+                                    checked={this.state.forms.database === 'other'}
+                                    onChange={this.fieldHandler}
+                                    disabled={this.state.forms.database}
                                 />
                             </Form.Field>
                         </Form>

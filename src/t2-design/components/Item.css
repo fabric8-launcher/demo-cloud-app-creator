@@ -4,8 +4,8 @@
     animation-iteration-count: infinite;
 }
 
-.topo-item.suggested:hover {
-    background-color: #ececec !important;
+.topo-item:hover {
+    background-color: #dfdfdf;
 }
 
 .topo-item {

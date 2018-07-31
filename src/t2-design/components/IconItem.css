@@ -1,13 +1,11 @@
 .topo-item-icon {
     border-radius: 10px;
-    color: #7f7f7f;
-    background-color: #ececec;
+    color: #4a4a4a;
+    background-color: #f6f6f6;
 }
 
-.topo-item-icon:hover {
-    background-color: #dfdfdf;
-}
+
 
 .topo-item-icon.selected {
-    background-color: #cbcbcb;
+    background-color: #e8e8e8;
 }

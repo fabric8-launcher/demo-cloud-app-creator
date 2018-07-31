@@ -114,8 +114,12 @@ class Topology extends React.Component {
         let orphans = Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && !node.belongsTo).map(([nid, node]) => node);
         while (orphans.length > 0) {
             let orphan = orphans.pop();
-            services.sort(([aid, a], [bid, b]) => this.countServiceBelong(layout, aid) - this.countServiceBelong(layout, bid));
-            orphan.belongsTo = services[0][0];
+            if (services.length > 0) {
+                services.sort(([aid, a], [bid, b]) => this.countServiceBelong(layout, aid) - this.countServiceBelong(layout, bid));
+                orphan.belongsTo = services[0][0];
+            } else {
+                orphan.belongsTo = '__dummy__';
+            }
         }
     }
 
@@ -123,11 +127,15 @@ class Topology extends React.Component {
         Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && node.belongsTo === sid).length;
 
     render() {
-        var layout = _.cloneDeep(this.props.layout);
+        let layout = _.cloneDeep(this.props.layout);
         this.determineBelongsToFromEdges(layout);
         this.distributeOrphans(layout);
         let nodeElems = this.createNodeElements(layout.nodes);
-        let serviceElems = nodeElems.filter(e => e.props.klass === 'service');
+        let dummyServiceElem = { props: { id: '__dummy__' }};
+        var serviceElems = nodeElems.filter(e => e.props.klass === 'service');
+        if (serviceElems.length == 0) {
+            serviceElems = [ dummyServiceElem ];
+        }
         let externalElems = nodeElems.filter(e => e.props.klass === 'external');
         let internalElems = nodeElems.filter(e => e.props.klass === 'internal');
         let edgeElems = this.createEdgeElements(layout.edges);
@@ -144,7 +152,7 @@ class Topology extends React.Component {
                         >
                             {this.rowForService(externalElems, "externals", se.props.id)}
                             <Grid.Row columns="1" className="services">
-                                <Grid.Column>{se}</Grid.Column>
+                                <Grid.Column>{ se !== dummyServiceElem && se}</Grid.Column>
                             </Grid.Row>
                             {this.rowForService(internalElems, "internals", se.props.id)}
                         </Grid>);

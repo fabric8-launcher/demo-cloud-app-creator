@@ -45,6 +45,18 @@ class DiagramWithTemplate extends React.Component {
             layout: empty,
             steps: [ this.startStep ],
             history: [],
+            listener: null,
+            amq: null,
+            database: null,
+            broker: null,
+        };
+    }
+
+    fieldHandler(name) {
+        return (e, { value }) => {
+            const change = {};
+          change[name] = value;
+            this.setState(change);
         };
     }
 
@@ -127,8 +139,11 @@ class DiagramWithTemplate extends React.Component {
                                     radio
                                     label='Create local message broker'
                                     name='create'
-                                    value='this'
+                                    value='create'
                                     onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep)}
+                                    checked={this.state.broker === 'create'}
+                                    onChange={this.fieldHandler('broker')}
+                                    disabled={this.state.broker}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -136,8 +151,11 @@ class DiagramWithTemplate extends React.Component {
                                     radio
                                     label='Connect to existing message broker'
                                     name='local'
-                                    value='this'
+                                    value='local'
                                     onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep)}
+                                    checked={this.state.broker === 'local'}
+                                    onChange={this.fieldHandler('broker')}
+                                    disabled={this.state.broker}
                                 />
                             </Form.Field>
                         </Form>
@@ -149,7 +167,7 @@ class DiagramWithTemplate extends React.Component {
 
     amqCreateStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(listenerLayout, this.listenerStep)}>
+            <Step>
                 <Step.Content>
                     <Step.Title>Message Broker: AMQ</Step.Title>
                     <Step.Description>A message broker based on Red Hat AMQ.</Step.Description>
@@ -159,7 +177,11 @@ class DiagramWithTemplate extends React.Component {
                                 radio
                                 label='Queue (one listener)'
                                 name='queue'
-                                value='this'
+                                value='queue'
+                                checked={this.state.amq === 'queue'}
+                                onChange={this.fieldHandler('amq')}
+                                onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
+                                disabled={this.state.amq}
                             />
                         </Form.Field>
                         <Form.Field>
@@ -167,7 +189,11 @@ class DiagramWithTemplate extends React.Component {
                                 radio
                                 label='Topic (many listeners)'
                                 name='topic'
-                                value='this'
+                                value='topic'
+                                checked={this.state.amq === 'topic'}
+                                onChange={this.fieldHandler('amq')}
+                                onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
+                                disabled={this.state.amq}
                             />
                         </Form.Field>
                     </Form>
@@ -228,7 +254,10 @@ class DiagramWithTemplate extends React.Component {
                                         radio
                                         label='Write messages to log'
                                         name='simple'
-                                        value='this'
+                                        value='simple'
+                                        checked={this.state.listener === 'simple'}
+                                        onChange={this.fieldHandler('listener')}
+                                        disabled={this.state.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -236,7 +265,10 @@ class DiagramWithTemplate extends React.Component {
                                         radio
                                         label='Write messages to database'
                                         name='database'
-                                        value='this'
+                                        value='database'
+                                        checked={this.state.listener === 'database'}
+                                        onChange={this.fieldHandler('listener')}
+                                        disabled={this.state.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -244,7 +276,10 @@ class DiagramWithTemplate extends React.Component {
                                         radio
                                         label='Some other message sink'
                                         name='other'
-                                        value='this'
+                                        value='other'
+                                        checked={this.state.listener === 'other'}
+                                        onChange={this.fieldHandler('listener')}
+                                        disabled={this.state.listener}
                                     />
                                 </Form.Field>
                                 <Form.Select label="Runtime" options={[
@@ -299,8 +334,11 @@ class DiagramWithTemplate extends React.Component {
                                     radio
                                     label='Create local database'
                                     name='create'
-                                    value='this'
+                                    value='create'
                                     onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep)}
+                                    checked={this.state.database === 'create'}
+                                    onChange={this.fieldHandler('database')}
+                                    disabled={this.state.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -308,8 +346,11 @@ class DiagramWithTemplate extends React.Component {
                                     radio
                                     label='Connect to local database'
                                     name='local'
-                                    value='this'
+                                    value='local'
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep)}
+                                    checked={this.state.database === 'local'}
+                                    onChange={this.fieldHandler('database')}
+                                    disabled={this.state.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -317,8 +358,11 @@ class DiagramWithTemplate extends React.Component {
                                     radio
                                     label='Connect to external database'
                                     name='other'
-                                    value='this'
+                                    value='other'
                                     onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep)}
+                                    checked={this.state.database === 'other'}
+                                    onChange={this.fieldHandler('database')}
+                                    disabled={this.state.database}
                                 />
                             </Form.Field>
                         </Form>

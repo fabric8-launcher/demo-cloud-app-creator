@@ -1,8 +1,19 @@
 .topo-item.suggested {
-    opacity: 0.4;
+    animation: item-bounce 0.5s cubic-bezier(.5,0.05,1,.5);
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
 }
 
 .topo-item.suggested:hover {
-    opacity: 1.0;
+    background-color: #ececec !important;
 }
 
+.topo-item {
+    background-color: #f1f1f1;
+}
+
+
+@keyframes item-bounce {
+    from { transform: translate3d(0, 0, 0);     }
+    to   { transform: translate3d(0, 5px, 0); }
+}

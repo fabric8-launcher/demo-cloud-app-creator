@@ -16,57 +16,15 @@ const empty = {
     }
 };
 
-const amqLayout = {
-    nodes: {
-        s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy'], suggested: true},
-        cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
-    },
-    edges: {
-        l1: {from: 's1', to: 'cm1', suggested: true},
-    }
-};
-
-const listenerLayout = {
-    nodes: {
-        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
-    },
-    edges: {
-        l2: {from: 's2', to: 's1', suggested: true},
-    }
-};
-
-const dbCreateLayout = {
-    nodes: {
-        s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy'], suggested: true},
-        cm2: {type: 'configmap', name: 'Database Auth', suggested: true},
-        v1: {type: 'storage', name: 'Database Storage', suggested: true},
-    },
-    edges: {
-        l3: {from: 's3', to: 'cm2', suggested: true},
-        l4: {from: 's3', to: 'v1', suggested: true},
-        l5: {from: 's2', to: 's3', suggested: true},
-    }
-};
-
-const restLayout = {
-    nodes: {
-        s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true, suggested:true},
-        r1: {type: 'route', suggested:true},
-    },
-    edges: {
-        l6: {from: 's4', to: 'r1', suggested:true},
-        l7: {from: 's4', to: 's3', suggested:true},
-    }
-};
-
 class DiagramWithTemplate extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             selectedItemId: null,
-            steps: [],
             layout: empty,
+            steps: [ this.startStep ],
+            history: [],
         };
     }
 
@@ -77,20 +35,21 @@ class DiagramWithTemplate extends React.Component {
             .map(([k,v]) => (v.suggested) ? [k,{...v, suggested:false}] : [k,v])
     );
 
-    pushStep = (layout) => {
+    pushStep = (layout, nextStep, append=true) => {
         this.setState((prevState, props) => {
-            let newSteps = [ ...prevState.steps, prevState.layout ];
+            let newHistory = [ ...prevState.history, { layout: _.cloneDeep(prevState.layout), steps: _.cloneDeep(prevState.steps ) } ];
             let newLayout = {
                 nodes: { ...this.unsuggest(prevState.layout.nodes), ...layout.nodes },
                 edges: { ...this.unsuggest(prevState.layout.edges), ...layout.edges },
             };
-            return { steps: newSteps, layout: newLayout };
+            let newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
+            return { layout: newLayout, steps: newSteps, history: newHistory };
         });
     }
 
-    buttonStep = (layout, title="OK") => (
+    buttonStep = (layout, nextStep, title="OK") => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(layout)}>
+            <Step onClick={() => this.pushStep(layout, nextStep)}>
                 <Step.Content>
                     <Form>
                         <Form.Field>
@@ -102,22 +61,34 @@ class DiagramWithTemplate extends React.Component {
         </DOMRef>
     )
 
-    startStep = () => (
-        <DOMRef domRef={this.scrollIntoView}>
-            <Step>
-                <Step.Content>
-                    <Step.Title>A Messaging App</Step.Title>
-                    <Step.Description>Let's create a messaging application</Step.Description>
-                </Step.Content>
-            </Step>
-        </DOMRef>
-    )
+    startStep = (props) => {
+        const amqLayout = {
+            nodes: {
+                s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy'], suggested: true},
+                cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
+            },
+            edges: {
+                l1: {from: 's1', to: 'cm1', suggested: true},
+            }
+        };
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>A Messaging App</Step.Title>
+                            <Step.Description>Let's create a messaging application</Step.Description>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(amqLayout, this.amqStep, "Start")
+        ];
+    }
 
-    startButtonStep = () => this.buttonStep(amqLayout, "Start");
-
-    amqStep = () => (
+    amqStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(empty)}>
+            <Step onClick={() => this.pushStep(empty, this.listenerStep)}>
                 <Step.Content>
                     <Step.Title>Message Broker: AMQ</Step.Title>
                     <Step.Description>A message broker based on Red Hat AMQ.</Step.Description>
@@ -144,58 +115,69 @@ class DiagramWithTemplate extends React.Component {
         </DOMRef>
     )
 
-    listenerStep = () => (
-        <DOMRef domRef={this.scrollIntoView}>
-            <Step>
-                <Step.Content>
-                    <Step.Title>Listener</Step.Title>
-                    <Step.Description>What kind of listener do you want for your messages?</Step.Description>
-                    <Form>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Write messages to log'
-                                name='simple'
-                                value='this'
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Write messages to database'
-                                name='database'
-                                value='this'
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Some other message sink'
-                                name='other'
-                                value='this'
-                            />
-                        </Form.Field>
-                        <Form.Select label="Runtime" options={[
-                            { key: 'vertx', text: 'Vert.x', value: 'vertx' },
-                            { key: 'sb', text: 'Spring Boot', value: 'springb' },
-                            { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
-                            { key: 'wf', text: 'Wildfly', value: 'wildfly' },
-                        ]} placeholder="Runtime" required />
-                        <Form.Select label="Version" options={[
-                            { key: 'com', text: 'Community', value: 'community' },
-                            { key: 'rh', text: 'Red Hat', value: 'redhat' },
-                        ]} placeholder="Version" required />
-                    </Form>
-                </Step.Content>
-            </Step>
-        </DOMRef>
-    )
+    listenerStep = (props) => {
+        const listenerLayout = {
+            nodes: {
+                s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
+            },
+            edges: {
+                l2: {from: 's2', to: 's1', suggested: true},
+            }
+        };
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>Listener</Step.Title>
+                            <Step.Description>What kind of listener do you want for your messages?</Step.Description>
+                            <Form>
+                                <Form.Field>
+                                    <Checkbox
+                                        radio
+                                        label='Write messages to log'
+                                        name='simple'
+                                        value='this'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Checkbox
+                                        radio
+                                        label='Write messages to database'
+                                        name='database'
+                                        value='this'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Checkbox
+                                        radio
+                                        label='Some other message sink'
+                                        name='other'
+                                        value='this'
+                                    />
+                                </Form.Field>
+                                <Form.Select label="Runtime" options={[
+                                    { key: 'vertx', text: 'Vert.x', value: 'vertx' },
+                                    { key: 'sb', text: 'Spring Boot', value: 'springb' },
+                                    { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
+                                    { key: 'wf', text: 'Wildfly', value: 'wildfly' },
+                                ]} placeholder="Runtime" required />
+                                <Form.Select label="Version" options={[
+                                    { key: 'com', text: 'Community', value: 'community' },
+                                    { key: 'rh', text: 'Red Hat', value: 'redhat' },
+                                ]} placeholder="Version" required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(listenerLayout, this.dbStep)
+        ];
+    }
 
-    listenerButtonStep = () => this.buttonStep(listenerLayout, "OK");
-
-    dbStep = () => (
+    dbStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(empty)}>
+            <Step onClick={() => this.pushStep(empty, this.dbCreateStep)}>
                 <Step.Content>
                     <Step.Title>Database</Step.Title>
                     <Step.Description>What database do you want to use?</Step.Description>
@@ -230,56 +212,84 @@ class DiagramWithTemplate extends React.Component {
         </DOMRef>
     )
 
-    dbCreateStep = () => (
-        <DOMRef domRef={this.scrollIntoView}>
-            <Step>
-                <Step.Content>
-                    <Step.Title>Create Local Database</Step.Title>
-                    <Step.Description>What database do you want to use?</Step.Description>
-                    <Form>
-                        <Dropdown placeholder='Database' label="Type" fluid selection
-                            options={[
-                                { key: 'psql', text: 'PostgreSQL', value: 'postgresql', image: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg' },
-                                { key: 'mysql', text: 'MySQL', value: 'mysql', image: 'https://www.mysql.com/common/logos/logo-mysql-170x115.png' },
-                            ]} placeholder="Database" required />
-                        <Form.Input label="Name" placeholder="Name" required />
-                        <Form.Button label="Schema">Import...</Form.Button>
-                        <Form.Input label="User" placeholder="User" required />
-                        <Form.Input label="Password" type="password" required />
-                    </Form>
-                </Step.Content>
-            </Step>
-        </DOMRef>
-    )
+    dbCreateStep = (props) => {
+        const dbCreateLayout = {
+            nodes: {
+                s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy'], suggested: true},
+                cm2: {type: 'configmap', name: 'Database Auth', suggested: true},
+                v1: {type: 'storage', name: 'Database Storage', suggested: true},
+            },
+            edges: {
+                l3: {from: 's3', to: 'cm2', suggested: true},
+                l4: {from: 's3', to: 'v1', suggested: true},
+                l5: {from: 's2', to: 's3', suggested: true},
+            }
+        };
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>Create Local Database</Step.Title>
+                            <Step.Description>What database do you want to use?</Step.Description>
+                            <Form>
+                                <Dropdown placeholder='Database' label="Type" fluid selection
+                                          options={[
+                                              { key: 'psql', text: 'PostgreSQL', value: 'postgresql', image: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg' },
+                                              { key: 'mysql', text: 'MySQL', value: 'mysql', image: 'https://www.mysql.com/common/logos/logo-mysql-170x115.png' },
+                                          ]} placeholder="Database" required />
+                                <Form.Input label="Name" placeholder="Name" required />
+                                <Form.Button label="Schema">Import...</Form.Button>
+                                <Form.Input label="User" placeholder="User" required />
+                                <Form.Input label="Password" type="password" required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(dbCreateLayout, this.restStep)
+        ];
+    }
 
-    dbCreateButtonStep = () => this.buttonStep(dbCreateLayout, "OK");
+    restStep = (props) => {
+        const restLayout = {
+            nodes: {
+                s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true, suggested:true},
+                r1: {type: 'route', suggested:true},
+            },
+            edges: {
+                l6: {from: 's4', to: 'r1', suggested:true},
+                l7: {from: 's4', to: 's3', suggested:true},
+            }
+        };
+        return [
+                (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>REST API</Step.Title>
+                            <Step.Description>Let's create a REST API to access the messages stored in the database</Step.Description>
+                            <Form>
+                                <Form.Select label="Runtime" options={[
+                                    { key: 'vertx', text: 'Vert.x', value: 'vertx' },
+                                    { key: 'sb', text: 'Spring Boot', value: 'springb' },
+                                    { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
+                                    { key: 'wf', text: 'Wildfly', value: 'wildfly' },
+                                ]} placeholder="Runtime" required />
+                                <Form.Select label="Version" options={[
+                                    { key: 'com', text: 'Community', value: 'community' },
+                                    { key: 'rh', text: 'Red Hat', value: 'redhat' },
+                                ]} placeholder="Version" required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(restLayout, this.generateButtonStep)
+        ];
+    }
 
-    restStep = () => (
-        <DOMRef domRef={this.scrollIntoView}>
-            <Step>
-                <Step.Content>
-                    <Step.Title>REST API</Step.Title>
-                    <Step.Description>Let's create a REST API to access the messages stored in the database</Step.Description>
-                    <Form>
-                        <Form.Select label="Runtime" options={[
-                            { key: 'vertx', text: 'Vert.x', value: 'vertx' },
-                            { key: 'sb', text: 'Spring Boot', value: 'springb' },
-                            { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
-                            { key: 'wf', text: 'Wildfly', value: 'wildfly' },
-                        ]} placeholder="Runtime" required />
-                        <Form.Select label="Version" options={[
-                            { key: 'com', text: 'Community', value: 'community' },
-                            { key: 'rh', text: 'Red Hat', value: 'redhat' },
-                        ]} placeholder="Version" required />
-                    </Form>
-                </Step.Content>
-            </Step>
-        </DOMRef>
-    )
-
-    restButtonStep = () => this.buttonStep(restLayout, "OK");
-
-    generateButtonStep = () => (
+    generateButtonStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
             <Step>
                 <Step.Content>
@@ -290,14 +300,14 @@ class DiagramWithTemplate extends React.Component {
                         <Form.Input label="Maven Artifact" value="booster" required />
                         <Form.Input label="Maven Version" value="1.0.0-SNAPSHOT" required />
                         <Form.Input label="Maven Group ID" value="io.openshift" required />
-                        <Form.Button primary icon="cloud upload" labelPosition="right" content="Deploy" onClick={() => this.pushStep(empty)} />
+                        <Form.Button primary icon="cloud upload" labelPosition="right" content="Deploy" onClick={() => this.pushStep(empty, this.infoStep, false)} />
                     </Form>
                 </Step.Content>
             </Step>
         </DOMRef>
     )
 
-    infoStep = () => (
+    infoStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
             <Step>
                 <Step.Content>
@@ -338,7 +348,7 @@ class DiagramWithTemplate extends React.Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                                <a onClick={() => this.setState({layout: empty, steps: []})}>Create new application</a>
+                                <a onClick={() => this.setState({layout: empty, history: [], steps: [ this.startStep ]})}>Create new application</a>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -352,23 +362,12 @@ class DiagramWithTemplate extends React.Component {
     }
 
     render() {
-        let showSteps = this.state.steps.length;
+        let showSteps = this.state.history.length;
         return (
             <div className={classNames("t3-design-withsteps")}>
                 <div className={classNames("left-panel")}>
                     <Step.Group fluid vertical>
-                        { showSteps < 7 && this.startStep() }
-                        { showSteps == 0 && this.startButtonStep() }
-                        { showSteps >= 1 && showSteps < 7 && this.amqStep() }
-                        { showSteps >= 2 && showSteps < 7 && this.listenerStep() }
-                        { showSteps == 2 && this.listenerButtonStep() }
-                        { showSteps >= 3 && showSteps < 7 && this.dbStep() }
-                        { showSteps >= 4 && showSteps < 7 && this.dbCreateStep() }
-                        { showSteps == 4 && this.dbCreateButtonStep() }
-                        { showSteps >= 5 && showSteps < 7 && this.restStep() }
-                        { showSteps == 5 && this.restButtonStep() }
-                        { showSteps >= 6 && showSteps < 7 && this.generateButtonStep() }
-                        { showSteps >= 7 && this.infoStep() }
+                        { this.state.steps.map((f, i, a) => f({ isLast: i == (a.length - 1) })) }
                     </Step.Group>
                 </div>
                 <div className={classNames("main-panel")}>

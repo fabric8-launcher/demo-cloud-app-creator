@@ -1,11 +1,27 @@
-.topo-item-icon {
+i.icon.topo-item-icon {
     border-radius: 10px;
     color: #4a4a4a;
     background-color: #f6f6f6;
+    line-height: 1;
+    vertical-align: baseline;
+    width: 2em;
+    height: 2em;
+    padding: .5em 0!important;
+    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 0 0 #767676, 0 1px 3px 0 #d4d4d5;
 }
 
-
+i.icon.topo-item-icon:hover {
+    box-shadow: 0px 0px 5px #41ff00 !important;
+    transform: translateY(-3px);
+    animation: none;
+    cursor: pointer;
+}
 
 .topo-item-icon.selected {
-    background-color: #e8e8e8;
+    box-shadow: 0px 0px 5px #41ff00 !important;
+}
+
+i.icon.topo-item-icon.selected:hover {
+    transform: none;
+    animation: none;
 }

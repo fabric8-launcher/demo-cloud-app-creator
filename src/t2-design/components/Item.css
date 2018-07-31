@@ -4,14 +4,6 @@
     animation-iteration-count: infinite;
 }
 
-.topo-item:hover {
-    background-color: #dfdfdf;
-}
-
-.topo-item {
-    background-color: #f1f1f1;
-}
-
 
 @keyframes item-bounce {
     from { transform: translate3d(0, 0, 0);     }

@@ -4,8 +4,18 @@
     margin: auto !important;
 }
 
-.topo-service.selected {
-    background-color: #ebebeb !important;
+.topo-item.topo-service {
+    background-color: #f1f1f1;
+}
+
+.topo-item.topo-service:hover {
+    background-color: #f1f1f1 !important;
+    box-shadow: 0px 0px 5px #41ff00 !important;
+    animation: none;
+}
+
+.topo-item.topo-service.selected {
+    box-shadow: 0px 0px 5px #41ff00;
 }
 
 .topo-service .floatleft {

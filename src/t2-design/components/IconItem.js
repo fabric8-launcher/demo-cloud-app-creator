@@ -12,8 +12,8 @@ const IconItem = (props) => (
     <Item {...props}><Icon
         name={props.icon}
         className={classNames('topo-item', 'topo-item-icon', 'selectable', {'selected': props.selected, 'suggested': props.suggested})}
-        bordered={props.selected}
         size="huge"
+        bordered
         onClick={() => props.onSelect(props)}
     /></Item>
 );

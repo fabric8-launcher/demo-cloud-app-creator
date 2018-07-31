@@ -16,6 +16,14 @@ const empty = {
     }
 };
 
+const initial = {
+    selectedItemId: null,
+    layout: empty,
+    steps: [],
+    forms: {},
+    history: [],
+};
+
 const listenerLayout = {
     nodes: {
         s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
@@ -40,14 +48,10 @@ class DiagramWithTemplate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            selectedItemId: null,
-            layout: empty,
-            steps: [ this.startStep ],
-            forms: {},
-            history: [],
-        };
+        this.state = this.initState();
     }
+
+    initState = () => ({ ...initial, ...this.pushStep_(initial, empty, this.startStep, 0) });
 
     fieldHandler = (e, { name, value }) => {
         this.setState((prevState, props) => {
@@ -63,25 +67,34 @@ class DiagramWithTemplate extends React.Component {
             .map(([k,v]) => (v.suggested) ? [k,{...v, suggested:false}] : [k,v])
     );
 
-    pushStep = (layout, nextStep, append=true) => {
+    pushStep_ = (prevState, layout, nextStep, index, append=true) => {
+        let prev = prevState;
+        if (index < (prevState.history.length - 1)) {
+            // Rollback to index-th step in the history
+            prev = { ...prevState.history[index+1], history: prevState.history.slice(0, index+1) };
+        }
+        const newHistory = [ ...prev.history, {
+            layout: _.cloneDeep(prev.layout),
+            steps: _.cloneDeep(prev.steps ),
+            forms: _.cloneDeep(prev.forms ),
+        } ];
+        const newLayout = {
+            nodes: { ...this.unsuggest(prev.layout.nodes), ...layout.nodes },
+            edges: { ...this.unsuggest(prev.layout.edges), ...layout.edges },
+        };
+        const newSteps = append ? [ ...prev.steps, nextStep ] : [ nextStep ];
+        return { layout: newLayout, steps: newSteps, history: newHistory, forms: prev.forms };
+    }
+
+    pushStep = (layout, nextStep, index, append=true) => {
         this.setState((prevState, props) => {
-            const newHistory = [ ...prevState.history, {
-                layout: _.cloneDeep(prevState.layout),
-                steps: _.cloneDeep(prevState.steps ),
-                forms: _.cloneDeep(prevState.forms ),
-            } ];
-            const newLayout = {
-                nodes: { ...this.unsuggest(prevState.layout.nodes), ...layout.nodes },
-                edges: { ...this.unsuggest(prevState.layout.edges), ...layout.edges },
-            };
-            const newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
-            return { layout: newLayout, steps: newSteps, history: newHistory };
+            return this.pushStep_(prevState, layout, nextStep, index, append);
         });
     }
 
-    buttonStep = (layout, nextStep, title="OK") => (
+    buttonStep = (layout, nextStep, index, title="OK") => (
         <DOMRef key="button" domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(layout, nextStep)}>
+            <Step onClick={() => this.pushStep(layout, nextStep, index)}>
                 <Step.Content>
                     <Form>
                         <Form.Field>
@@ -105,7 +118,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(empty, this.amqStep, "Start")
+            props.isLast && this.buttonStep(empty, this.amqStep, props.index, "Start")
         ];
     }
 
@@ -139,10 +152,9 @@ class DiagramWithTemplate extends React.Component {
                                     label='Create local message broker'
                                     name='broker'
                                     value='create'
-                                    onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep)}
+                                    onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep, props.index)}
                                     checked={this.state.forms.broker === 'create'}
                                     onChange={this.fieldHandler}
-                                    disabled={!!this.state.forms.broker}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -151,10 +163,9 @@ class DiagramWithTemplate extends React.Component {
                                     label='Connect to existing message broker'
                                     name='broker'
                                     value='local'
-                                    onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep)}
+                                    onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep, props.index)}
                                     checked={this.state.forms.broker === 'local'}
                                     onChange={this.fieldHandler}
-                                    disabled={!!this.state.forms.broker}
                                 />
                             </Form.Field>
                         </Form>
@@ -179,8 +190,7 @@ class DiagramWithTemplate extends React.Component {
                                 value='queue'
                                 checked={this.state.forms.amq === 'queue'}
                                 onChange={this.fieldHandler}
-                                onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={!!this.state.forms.amq}
+                                onClick={() => this.pushStep(listenerLayout, this.listenerStep, props.index)}
                             />
                         </Form.Field>
                         <Form.Field>
@@ -191,8 +201,7 @@ class DiagramWithTemplate extends React.Component {
                                 value='topic'
                                 checked={this.state.forms.amq === 'topic'}
                                 onChange={this.fieldHandler}
-                                onClick={() => this.pushStep(listenerLayout, this.listenerStep)}
-                                disabled={!!this.state.forms.amq}
+                                onClick={() => this.pushStep(listenerLayout, this.listenerStep, props.index)}
                             />
                         </Form.Field>
                     </Form>
@@ -235,7 +244,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(listenerLayout, this.listenerStep)
+            props.isLast && this.buttonStep(listenerLayout, this.listenerStep, props.index)
         ];
     }
 
@@ -256,7 +265,6 @@ class DiagramWithTemplate extends React.Component {
                                         value='simple'
                                         checked={this.state.forms.listener === 'simple'}
                                         onChange={this.fieldHandler}
-                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -267,7 +275,6 @@ class DiagramWithTemplate extends React.Component {
                                         value='database'
                                         checked={this.state.forms.listener === 'database'}
                                         onChange={this.fieldHandler}
-                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -278,7 +285,6 @@ class DiagramWithTemplate extends React.Component {
                                         value='other'
                                         checked={this.state.forms.listener === 'other'}
                                         onChange={this.fieldHandler}
-                                        disabled={!!this.state.forms.listener}
                                     />
                                 </Form.Field>
                                 <Form.Select label="Runtime" options={[
@@ -296,7 +302,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(empty, this.dbStep)
+            props.isLast && this.buttonStep(empty, this.dbStep, props.index)
         ];
     }
 
@@ -334,10 +340,9 @@ class DiagramWithTemplate extends React.Component {
                                     label='Create local database'
                                     name='database'
                                     value='create'
-                                    onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep)}
+                                    onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep, props.index)}
                                     checked={this.state.forms.database === 'create'}
                                     onChange={this.fieldHandler}
-                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -346,10 +351,9 @@ class DiagramWithTemplate extends React.Component {
                                     label='Connect to local database'
                                     name='database'
                                     value='local'
-                                    onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep)}
+                                    onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep, props.index)}
                                     checked={this.state.forms.database === 'local'}
                                     onChange={this.fieldHandler}
-                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -358,10 +362,9 @@ class DiagramWithTemplate extends React.Component {
                                     label='Connect to external database'
                                     name='database'
                                     value='other'
-                                    onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep)}
+                                    onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep, props.index)}
                                     checked={this.state.forms.database === 'other'}
                                     onChange={this.fieldHandler}
-                                    disabled={!!this.state.forms.database}
                                 />
                             </Form.Field>
                         </Form>
@@ -401,7 +404,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(restLayout, this.restStep)
+            props.isLast && this.buttonStep(restLayout, this.restStep, props.index)
         ];
     }
 
@@ -440,7 +443,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(restLayout, this.restStep)
+            props.isLast && this.buttonStep(restLayout, this.restStep, props.index)
         ];
     }
 
@@ -468,7 +471,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(restLayout, this.restStep)
+            props.isLast && this.buttonStep(restLayout, this.restStep, props.index)
         ];
     }
 
@@ -496,7 +499,7 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(empty, this.generateButtonStep)
+            props.isLast && this.buttonStep(empty, this.generateButtonStep, props.index)
         ];
     }
 
@@ -511,7 +514,7 @@ class DiagramWithTemplate extends React.Component {
                         <Form.Input label="Maven Artifact" value="booster" required />
                         <Form.Input label="Maven Version" value="1.0.0-SNAPSHOT" required />
                         <Form.Input label="Maven Group ID" value="io.openshift" required />
-                        <Form.Button primary icon="cloud upload" labelPosition="right" content="Deploy" onClick={() => this.pushStep(empty, this.infoStep, false)} />
+                        <Form.Button primary icon="cloud upload" labelPosition="right" content="Deploy" onClick={() => this.pushStep(empty, this.infoStep, props.index, false)} />
                     </Form>
                 </Step.Content>
             </Step>
@@ -559,7 +562,7 @@ class DiagramWithTemplate extends React.Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                                <a onClick={() => this.setState({layout: empty, history: [], steps: [ this.startStep ], forms: {}})}>Create new application</a>
+                                <a onClick={() => this.setState(this.initState())}>Create new application</a>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -577,7 +580,7 @@ class DiagramWithTemplate extends React.Component {
             <div className={classNames("t3-design-withsteps")}>
                 <div className={classNames("left-panel")}>
                     <Step.Group fluid vertical>
-                        { this.state.steps.map((f, i, a) => f({ isLast: i === (a.length - 1) })) }
+                        { this.state.steps.map((f, i, a) => f({ index: i, isLast: i === (a.length - 1) })) }
                     </Step.Group>
                 </div>
                 <div className={classNames("main-panel")}>

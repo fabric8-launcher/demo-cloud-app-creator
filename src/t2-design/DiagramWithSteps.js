@@ -16,6 +16,26 @@ const empty = {
     }
 };
 
+const listenerLayout = {
+    nodes: {
+        s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
+    },
+    edges: {
+        l2: {from: 's2', to: 'mb1', suggested: true},
+    }
+};
+
+const restLayout = {
+    nodes: {
+        s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true, suggested:true},
+        r1: {type: 'route', suggested:true},
+    },
+    edges: {
+        l6: {from: 's4', to: 'r1', suggested:true},
+        l7: {from: 's4', to: 'db1', suggested:true},
+    }
+};
+
 class DiagramWithTemplate extends React.Component {
 
     constructor(props) {
@@ -42,6 +62,7 @@ class DiagramWithTemplate extends React.Component {
                 nodes: { ...this.unsuggest(prevState.layout.nodes), ...layout.nodes },
                 edges: { ...this.unsuggest(prevState.layout.edges), ...layout.edges },
             };
+            console.log(newLayout);
             let newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
             return { layout: newLayout, steps: newSteps, history: newHistory };
         });
@@ -62,15 +83,6 @@ class DiagramWithTemplate extends React.Component {
     )
 
     startStep = (props) => {
-        const amqLayout = {
-            nodes: {
-                s1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy'], suggested: true},
-                cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
-            },
-            edges: {
-                l1: {from: 's1', to: 'cm1', suggested: true},
-            }
-        };
         return [
             (
                 <DOMRef domRef={this.scrollIntoView}>
@@ -82,13 +94,62 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(amqLayout, this.amqStep, "Start")
+            props.isLast && this.buttonStep(empty, this.amqStep, "Start")
         ];
     }
 
-    amqStep = (props) => (
+    amqStep = (props) => {
+        const amqCreateLayout = {
+            nodes: {
+                mb1: {type: 'service', name: 'Message Broker: AMQ', services: ['dummy'], suggested: true},
+                cm1: {type: 'configmap', name: 'Message Broker Auth', suggested: true},
+            },
+            edges: {
+                l1: {from: 'mb1', to: 'cm1', suggested: true},
+            }
+        };
+        const amqExistingLayout = {
+            nodes: {
+                mb1: {type: 'binding', suggested: true},
+            },
+            edges: {
+            }
+        };
+        return (
+            <DOMRef domRef={this.scrollIntoView}>
+                <Step>
+                    <Step.Content>
+                        <Step.Title>Message Broker</Step.Title>
+                        <Step.Description>What message broker do you want to use?</Step.Description>
+                        <Form>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Create local message broker'
+                                    name='create'
+                                    value='this'
+                                    onClick={() => this.pushStep(amqCreateLayout, this.amqCreateStep)}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Connect to existing message broker'
+                                    name='local'
+                                    value='this'
+                                    onClick={() => this.pushStep(amqExistingLayout, this.amqExistingStep)}
+                                />
+                            </Form.Field>
+                        </Form>
+                    </Step.Content>
+                </Step>
+            </DOMRef>
+        )
+    }
+
+    amqCreateStep = (props) => (
         <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(empty, this.listenerStep)}>
+            <Step onClick={() => this.pushStep(listenerLayout, this.listenerStep)}>
                 <Step.Content>
                     <Step.Title>Message Broker: AMQ</Step.Title>
                     <Step.Description>A message broker based on Red Hat AMQ.</Step.Description>
@@ -115,22 +176,52 @@ class DiagramWithTemplate extends React.Component {
         </DOMRef>
     )
 
+    amqExistingStep = (props) => {
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>Connect To Existing Message Broker</Step.Title>
+                            <Step.Description>Connect to the message broker you want to use</Step.Description>
+                            <Form>
+                                <Form.Button label="Schema">Authenticate...</Form.Button>
+                                <Dropdown placeholder='Select Cluster' label="Cluster" fluid selection
+                                          options={[
+                                              { key: 'prouse1', text: 'Pro US East 1', value: 'pro-us-east-1' },
+                                              { key: 'prousw1', text: 'Pro US West 1', value: 'pro-us-west-1' },
+                                              { key: 'proeuw1', text: 'Pro EU West 1', value: 'pro-eu-west-1' },
+                                              { key: 'proapse2', text: 'Pro AP Southeast 2', value: 'pro-ap-southeast-2' },
+                                          ]} required />
+                                <Dropdown placeholder='Select Message Broker' label="Message Broker" fluid selection
+                                          options={[
+                                              { key: 'db1', text: 'twinkly-sunshine', value: 'db1' },
+                                              { key: 'db2', text: 'catty-kitten-prod', value: 'db2' },
+                                              { key: 'db3', text: 'theatrial-insights', value: 'db3' },
+                                          ]} required />
+                                <Dropdown placeholder='Select Queue or Topic' label="Queue / Topic" fluid selection
+                                          options={[
+                                              { key: 'q1', text: 'incoming-kittens', value: 'q1' },
+                                              { key: 'q2', text: 'received-reindeer', value: 'q2' },
+                                              { key: 'q3', text: 'notified-narwhals', value: 'q3' },
+                                          ]} required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(listenerLayout, this.listenerStep)
+        ];
+    }
+
     listenerStep = (props) => {
-        const listenerLayout = {
-            nodes: {
-                s2: {type: 'service', name: 'Listener: to Database', hasBuildConfig: true, suggested: true},
-            },
-            edges: {
-                l2: {from: 's2', to: 's1', suggested: true},
-            }
-        };
         return [
             (
                 <DOMRef domRef={this.scrollIntoView}>
                     <Step>
                         <Step.Content>
                             <Step.Title>Listener</Step.Title>
-                            <Step.Description>What kind of listener do you want for your messages?</Step.Description>
+                            <Step.Description>Message listeners are the application pieces which receive a message and may take some action. What kind of listener do you want for your messages?</Step.Description>
                             <Form>
                                 <Form.Field>
                                     <Checkbox
@@ -161,70 +252,83 @@ class DiagramWithTemplate extends React.Component {
                                     { key: 'sb', text: 'Spring Boot', value: 'springb' },
                                     { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
                                     { key: 'wf', text: 'Wildfly', value: 'wildfly' },
-                                ]} placeholder="Runtime" required />
+                                ]} placeholder="Select Runtime" required />
                                 <Form.Select label="Version" options={[
                                     { key: 'com', text: 'Community', value: 'community' },
                                     { key: 'rh', text: 'Red Hat', value: 'redhat' },
-                                ]} placeholder="Version" required />
+                                ]} placeholder="Select Version" required />
                             </Form>
                         </Step.Content>
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(listenerLayout, this.dbStep)
+            props.isLast && this.buttonStep(empty, this.dbStep)
         ];
     }
 
-    dbStep = (props) => (
-        <DOMRef domRef={this.scrollIntoView}>
-            <Step onClick={() => this.pushStep(empty, this.dbCreateStep)}>
-                <Step.Content>
-                    <Step.Title>Database</Step.Title>
-                    <Step.Description>What database do you want to use?</Step.Description>
-                    <Form>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Create local database'
-                                name='create'
-                                value='this'
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Connect to local database'
-                                name='local'
-                                value='this'
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <Checkbox
-                                radio
-                                label='Connect to external database'
-                                name='other'
-                                value='this'
-                            />
-                        </Form.Field>
-                    </Form>
-                </Step.Content>
-            </Step>
-        </DOMRef>
-    )
-
-    dbCreateStep = (props) => {
+    dbStep = (props) => {
         const dbCreateLayout = {
             nodes: {
-                s3: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy'], suggested: true},
+                db1: {type: 'service', name: 'Database: PostgreSQL', services: ['dummy'], suggested: true},
                 cm2: {type: 'configmap', name: 'Database Auth', suggested: true},
                 v1: {type: 'storage', name: 'Database Storage', suggested: true},
             },
             edges: {
-                l3: {from: 's3', to: 'cm2', suggested: true},
-                l4: {from: 's3', to: 'v1', suggested: true},
-                l5: {from: 's2', to: 's3', suggested: true},
+                l3: {from: 'db1', to: 'cm2', suggested: true},
+                l4: {from: 'db1', to: 'v1', suggested: true},
+                l5: {from: 's2', to: 'db1', suggested: true},
             }
         };
+        const dbExistingLayout = {
+            nodes: {
+                db1: {type: 'extdb', suggested: true},
+            },
+            edges: {
+                l5: {from: 's2', to: 'db1', suggested: true},
+            }
+        };
+        return (
+            <DOMRef domRef={this.scrollIntoView}>
+                <Step>
+                    <Step.Content>
+                        <Step.Title>Database</Step.Title>
+                        <Step.Description>What database do you want to use?</Step.Description>
+                        <Form>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Create local database'
+                                    name='create'
+                                    value='this'
+                                    onClick={() => this.pushStep(dbCreateLayout, this.dbCreateStep)}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Connect to local database'
+                                    name='local'
+                                    value='this'
+                                    onClick={() => this.pushStep(dbExistingLayout, this.dbLocalStep)}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Connect to external database'
+                                    name='other'
+                                    value='this'
+                                    onClick={() => this.pushStep(dbExistingLayout, this.dbExternalStep)}
+                                />
+                            </Form.Field>
+                        </Form>
+                    </Step.Content>
+                </Step>
+            </DOMRef>
+        )
+    }
+
+    dbCreateStep = (props) => {
         return [
             (
                 <DOMRef domRef={this.scrollIntoView}>
@@ -233,13 +337,20 @@ class DiagramWithTemplate extends React.Component {
                             <Step.Title>Create Local Database</Step.Title>
                             <Step.Description>What database do you want to use?</Step.Description>
                             <Form>
-                                <Dropdown placeholder='Database' label="Type" fluid selection
+                                <Dropdown placeholder='Select Database' label="Type" fluid selection
                                           options={[
                                               { key: 'psql', text: 'PostgreSQL', value: 'postgresql', image: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg' },
                                               { key: 'mysql', text: 'MySQL', value: 'mysql', image: 'https://www.mysql.com/common/logos/logo-mysql-170x115.png' },
-                                          ]} placeholder="Database" required />
+                                          ]} required />
                                 <Form.Input label="Name" placeholder="Name" required />
                                 <Form.Button label="Schema">Import...</Form.Button>
+                                <Dropdown placeholder='Select Table' label="Table" fluid selection
+                                          options={[
+                                              { key: 'import', text: 'Import Schema', value: 'import' },
+                                              { key: 't1', text: 'sunny-days', value: 't1' },
+                                              { key: 't2', text: 'twinkly-months', value: 't2' },
+                                              { key: 't3', text: 'stars-sun-props', value: 't3' },
+                                          ]} required />
                                 <Form.Input label="User" placeholder="User" required />
                                 <Form.Input label="Password" type="password" required />
                             </Form>
@@ -247,21 +358,78 @@ class DiagramWithTemplate extends React.Component {
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(dbCreateLayout, this.restStep)
+            props.isLast && this.buttonStep(restLayout, this.restStep)
+        ];
+    }
+
+    dbLocalStep = (props) => {
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>Connect To Existing Database</Step.Title>
+                            <Step.Description>Connect to the database you want to use</Step.Description>
+                            <Form>
+                                <Form.Button label="Schema">Authenticate...</Form.Button>
+                                <Dropdown placeholder='Select Cluster' label="Cluster" fluid selection
+                                          options={[
+                                              { key: 'prouse1', text: 'Pro US East 1', value: 'pro-us-east-1' },
+                                              { key: 'prousw1', text: 'Pro US West 1', value: 'pro-us-west-1' },
+                                              { key: 'proeuw1', text: 'Pro EU West 1', value: 'pro-eu-west-1' },
+                                              { key: 'proapse2', text: 'Pro AP Southeast 2', value: 'pro-ap-southeast-2' },
+                                          ]} required />
+                                <Dropdown placeholder='Select Database' label="Database" fluid selection
+                                          options={[
+                                              { key: 'db1', text: 'twinkly-sunshine', value: 'db1' },
+                                              { key: 'db2', text: 'catty-kitten-prod', value: 'db2' },
+                                              { key: 'db3', text: 'theatrial-insights', value: 'db3' },
+                                          ]} required />
+                                <Dropdown placeholder='Select Table' label="Table" fluid selection
+                                          options={[
+                                              { key: 'import', text: 'Import Schema', value: 'import' },
+                                              { key: 't1', text: 'sunny-days', value: 't1' },
+                                              { key: 't2', text: 'twinkly-months', value: 't2' },
+                                              { key: 't3', text: 'stars-sun-props', value: 't3' },
+                                          ]} required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(restLayout, this.restStep)
+        ];
+    }
+
+    dbExternalStep = (props) => {
+        return [
+            (
+                <DOMRef domRef={this.scrollIntoView}>
+                    <Step>
+                        <Step.Content>
+                            <Step.Title>Connect To External Database</Step.Title>
+                            <Step.Description>Connect to the database you want to use</Step.Description>
+                            <Form>
+                                <Form.Input label="Connection" placeholder="Connection String" required />
+                                <Form.Input label="User" placeholder="User" required />
+                                <Form.Input label="Password" type="password" required />
+                                <Dropdown placeholder='Select Table' label="Table" fluid selection
+                                          options={[
+                                              { key: 'import', text: 'Import Schema', value: 'import' },
+                                              { key: 't1', text: 'sunny-days', value: 't1' },
+                                              { key: 't2', text: 'twinkly-months', value: 't2' },
+                                              { key: 't3', text: 'stars-sun-props', value: 't3' },
+                                          ]} required />
+                            </Form>
+                        </Step.Content>
+                    </Step>
+                </DOMRef>
+            ),
+            props.isLast && this.buttonStep(restLayout, this.restStep)
         ];
     }
 
     restStep = (props) => {
-        const restLayout = {
-            nodes: {
-                s4: {type: 'service', name: 'REST API', services: ['dummy'], hasBuildConfig: true, suggested:true},
-                r1: {type: 'route', suggested:true},
-            },
-            edges: {
-                l6: {from: 's4', to: 'r1', suggested:true},
-                l7: {from: 's4', to: 's3', suggested:true},
-            }
-        };
         return [
                 (
                 <DOMRef domRef={this.scrollIntoView}>
@@ -275,17 +443,17 @@ class DiagramWithTemplate extends React.Component {
                                     { key: 'sb', text: 'Spring Boot', value: 'springb' },
                                     { key: 'nodejs', text: 'NodeJs', value: 'nodejs' },
                                     { key: 'wf', text: 'Wildfly', value: 'wildfly' },
-                                ]} placeholder="Runtime" required />
+                                ]} placeholder="Select Runtime" required />
                                 <Form.Select label="Version" options={[
                                     { key: 'com', text: 'Community', value: 'community' },
                                     { key: 'rh', text: 'Red Hat', value: 'redhat' },
-                                ]} placeholder="Version" required />
+                                ]} placeholder="Select Version" required />
                             </Form>
                         </Step.Content>
                     </Step>
                 </DOMRef>
             ),
-            props.isLast && this.buttonStep(restLayout, this.generateButtonStep)
+            props.isLast && this.buttonStep(empty, this.generateButtonStep)
         ];
     }
 

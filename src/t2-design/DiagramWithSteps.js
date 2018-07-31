@@ -51,7 +51,7 @@ class DiagramWithTemplate extends React.Component {
 
     fieldHandler = (e, { name, value }) => {
         this.setState((prevState, props) => {
-            let newForms = { ...prevState.forms, [name]: value };
+            const newForms = { ...prevState.forms, [name]: value };
             return { forms: newForms };
         });
     }
@@ -65,16 +65,16 @@ class DiagramWithTemplate extends React.Component {
 
     pushStep = (layout, nextStep, append=true) => {
         this.setState((prevState, props) => {
-            let newHistory = [ ...prevState.history, {
+            const newHistory = [ ...prevState.history, {
                 layout: _.cloneDeep(prevState.layout),
                 steps: _.cloneDeep(prevState.steps ),
                 forms: _.cloneDeep(prevState.forms ),
             } ];
-            let newLayout = {
+            const newLayout = {
                 nodes: { ...this.unsuggest(prevState.layout.nodes), ...layout.nodes },
                 edges: { ...this.unsuggest(prevState.layout.edges), ...layout.edges },
             };
-            let newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
+            const newSteps = append ? [ ...prevState.steps, nextStep ] : [ nextStep ];
             return { layout: newLayout, steps: newSteps, history: newHistory };
         });
     }

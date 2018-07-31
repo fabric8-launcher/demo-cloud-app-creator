@@ -16,8 +16,8 @@ const Line = (props) => {
 const pathDimensions = (x1, y1, x2, y2) => `M${x1},${y1} L${x2},${y2}`;
 
 const getBounds = (parent, elem) => {
-    let parentRect = parent.getBoundingClientRect();
-    let elemRect = elem.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    const elemRect = elem.getBoundingClientRect();
     return {
         x: elemRect.x - parentRect.x,
         y: elemRect.y - parentRect.y,
@@ -27,8 +27,8 @@ const getBounds = (parent, elem) => {
 }
 
 const calculateAnchorPoints = (parent, from, to) => {
-    let fromRect = getBounds(parent, from);
-    let toRect = getBounds(parent, to);
+    const fromRect = getBounds(parent, from);
+    const toRect = getBounds(parent, to);
     return [fromRect.x + fromRect.width / 2.0, fromRect.y + fromRect.height / 2.0, toRect.x + toRect.width / 2.0, toRect.y + toRect.height / 2.0];
 }
 

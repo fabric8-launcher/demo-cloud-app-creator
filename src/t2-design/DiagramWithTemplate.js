@@ -36,12 +36,12 @@ class DiagramWithTemplate extends React.Component {
     }
 
     updateLayoutFromText = (text) => {
-        let json = JSON.parse(text);
+        const json = JSON.parse(text);
         this.setState({templateText: text, templateJson: json, layout: this.templateToLayout(json)})
     }
 
     templateToLayout = (template) => {
-        let layout = { nodes: {}, edges: {} };
+        const layout = { nodes: {}, edges: {} };
 
         // First find and transform our "services"
         this.itemsByKind(template, "DeploymentConfig").forEach(item => this.transformDeploymentConfig(layout, template, item));
@@ -61,8 +61,8 @@ class DiagramWithTemplate extends React.Component {
     // DeploymentConfigs, BuildConfigs and Services
 
     transformDeploymentConfig = (layout, template, item) => {
-        let hasBC = this.itemsByKind(template, "BuildConfig").filter(i => i.metadata.name === item.metadata.name).length > 0;
-        let services = this.itemsByKind(template, "Service").filter(i => this.deploymentConfigSelector(i) === item.metadata.name).map(i => i.metadata.name);
+        const hasBC = this.itemsByKind(template, "BuildConfig").filter(i => i.metadata.name === item.metadata.name).length > 0;
+        const services = this.itemsByKind(template, "Service").filter(i => this.deploymentConfigSelector(i) === item.metadata.name).map(i => i.metadata.name);
         layout.nodes[this.serviceId(item)] = ({ type: 'service', name: item.metadata.name, hasBuildConfig: hasBC, services: services });
     }
 
@@ -73,16 +73,16 @@ class DiagramWithTemplate extends React.Component {
     // Routes
 
     transformRoute = (layout, template, item) => {
-        let id = this.routeId(item);
-        let to = this.routeBelongsTo(layout, template, item);
+        const id = this.routeId(item);
+        const to = this.routeBelongsTo(layout, template, item);
         layout.nodes[id] = ({ type: 'route', name: item.metadata.name, belongsTo: to });
         layout.edges[id+"-"+to] = ({ type: 'line', from: id, to: to });
     }
 
     routeBelongsTo = (layout, template, item) => {
-        let srvKind = item.spec.to.kind;
-        let srvName = item.spec.to.name;
-        let items = this.itemsByKind(template, srvKind).filter(i => i.metadata.name === srvName);
+        const srvKind = item.spec.to.kind;
+        const srvName = item.spec.to.name;
+        const items = this.itemsByKind(template, srvKind).filter(i => i.metadata.name === srvName);
         return this.serviceIdFromName(this.deploymentConfigSelector(items[0]));
     }
 
@@ -91,7 +91,7 @@ class DiagramWithTemplate extends React.Component {
     // ConfigMaps
 
     transformConfigMap = (layout, template, item) => {
-        let id = this.configMapId(item);
+        const id = this.configMapId(item);
         layout.nodes[id] = ({ type: 'configmap', name: item.metadata.name });
 
         // Try making connections
@@ -100,7 +100,7 @@ class DiagramWithTemplate extends React.Component {
                 .filter(v => _.get(v, 'env', [])
                     .filter(e => _.get(e, 'valueFrom.configMapKeyRef.name') === item.metadata.name).length > 0).length > 0)
             .forEach(s => {
-                let to = this.serviceId(s);
+                const to = this.serviceId(s);
                 layout.edges[id+"-"+to] = ({ type: 'line', from: id, to: to });
             });
     }
@@ -110,7 +110,7 @@ class DiagramWithTemplate extends React.Component {
     // PersistentVolumeClaims
 
     transformPersistentVolumeClaim = (layout, template, item) => {
-        let id = this.persistentVolumeClaimId(item);
+        const id = this.persistentVolumeClaimId(item);
         layout.nodes[id] = ({ type: 'storage', name: item.metadata.name });
 
         // Try making connections
@@ -118,7 +118,7 @@ class DiagramWithTemplate extends React.Component {
             .filter(i => _.get(i, 'spec.template.spec.volumes', [])
                 .filter(v => _.get(v, 'persistentVolumeClaim.claimName') === item.metadata.name).length > 0)
             .forEach(s => {
-                let to = this.serviceId(s);
+                const to = this.serviceId(s);
                 layout.edges[id+"-"+to] = ({ type: 'line', from: id, to: to });
             });
     }

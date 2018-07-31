@@ -23,7 +23,7 @@ const Service = (props) => (
 );
 
 const serviceType = (props) => {
-    var type;
+    let type;
     if (props.hasBuildConfig || (props.services && props.services.length > 0)) {
         type = [<span key="dc" title="DeploymentConfig">DC</span>];
         if (props.hasBuildConfig) {

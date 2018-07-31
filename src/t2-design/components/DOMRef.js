@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 class DOMRef extends React.Component {
 
     componentDidMount() {
-        let node = ReactDOM.findDOMNode(this);
+        const node = ReactDOM.findDOMNode(this);
         this.props.domRef(this.props, node);
     }
 

@@ -84,14 +84,14 @@ class Topology extends React.Component {
     }
 
     rowForService = (elems, className, serviceId) => {
-        let columns = this.columnsForService(elems, serviceId);
+        const columns = this.columnsForService(elems, serviceId);
         return (<Grid.Row columns={columns.length} className={className}>
             {columns}
         </Grid.Row>);
     }
 
     columnsForService = (elems, serviceId) => {
-        let result = elems
+        const result = elems
             .filter(e => e.props.belongsTo === serviceId)
             .map(e => (<Grid.Column key={e.props.id}>{e}</Grid.Column>));
         return (result.length > 0) ? result : [<Grid.Column key="empty" />];
@@ -101,19 +101,19 @@ class Topology extends React.Component {
         Object.entries(layout.nodes)
             .filter(([nid, node]) => node.type !== 'service' && !node.belongsTo)
             .forEach(([nid, node]) => {
-                let connected = Object.entries(layout.edges).filter(([eid, edge]) => edge.from === nid || edge.to === nid);
+                const connected = Object.entries(layout.edges).filter(([eid, edge]) => edge.from === nid || edge.to === nid);
                 if (connected.length > 0) {
-                    let edge = connected[0][1];
+                    const edge = connected[0][1];
                     node.belongsTo = (edge.from === nid) ? edge.to : edge.from;
                 }
             });
     }
 
     distributeOrphans = (layout) => {
-        let services = Object.entries(layout.nodes).filter(([nid, node]) => node.type === 'service');
-        let orphans = Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && !node.belongsTo).map(([nid, node]) => node);
+        const services = Object.entries(layout.nodes).filter(([nid, node]) => node.type === 'service');
+        const orphans = Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && !node.belongsTo).map(([nid, node]) => node);
         while (orphans.length > 0) {
-            let orphan = orphans.pop();
+            const orphan = orphans.pop();
             if (services.length > 0) {
                 services.sort(([aid, a], [bid, b]) => this.countServiceBelong(layout, aid) - this.countServiceBelong(layout, bid));
                 orphan.belongsTo = services[0][0];
@@ -127,18 +127,18 @@ class Topology extends React.Component {
         Object.entries(layout.nodes).filter(([nid, node]) => node.type !== 'service' && node.belongsTo === sid).length;
 
     render() {
-        let layout = _.cloneDeep(this.props.layout);
+        const layout = _.cloneDeep(this.props.layout);
         this.determineBelongsToFromEdges(layout);
         this.distributeOrphans(layout);
-        let nodeElems = this.createNodeElements(layout.nodes);
-        let dummyServiceElem = { props: { id: '__dummy__' }};
-        var serviceElems = nodeElems.filter(e => e.props.klass === 'service');
+        const nodeElems = this.createNodeElements(layout.nodes);
+        const dummyServiceElem = { props: { id: '__dummy__' }};
+        let serviceElems = nodeElems.filter(e => e.props.klass === 'service');
         if (serviceElems.length === 0) {
             serviceElems = [ dummyServiceElem ];
         }
-        let externalElems = nodeElems.filter(e => e.props.klass === 'external');
-        let internalElems = nodeElems.filter(e => e.props.klass === 'internal');
-        let edgeElems = this.createEdgeElements(layout.edges);
+        const externalElems = nodeElems.filter(e => e.props.klass === 'external');
+        const internalElems = nodeElems.filter(e => e.props.klass === 'internal');
+        const edgeElems = this.createEdgeElements(layout.edges);
         return (
             <DOMRef domRef={this.onDOMRef}>
                 <div className={classNames('topo')}>
